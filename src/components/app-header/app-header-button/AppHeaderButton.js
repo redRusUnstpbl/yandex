@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeaderButtonStyles from './appHeaderButton.module.css'
 
-export default function AppHeaderButton({button}) {
+export default function AppHeaderButton({ button }) {
     let component;
     let buttonClass = AppHeaderButtonStyles.header_button;
     let buttonType = 'primary';
@@ -11,7 +11,7 @@ export default function AppHeaderButton({button}) {
         buttonType = 'secondary';
     }
 
-    switch(button.component) {
+    switch (button.component) {
         case 'BurgerIcon':
             component = <BurgerIcon type={buttonType} />
             break;
@@ -32,9 +32,9 @@ export default function AppHeaderButton({button}) {
 }
 
 AppHeaderButton.propTypes = {
-    "button": {
+    "button": PropTypes.shape({
         "component": PropTypes.string.isRequired,
         "state": PropTypes.string.isRequired,
         "text": PropTypes.string.isRequired,
-    },
+    }).isRequired,
 }; 

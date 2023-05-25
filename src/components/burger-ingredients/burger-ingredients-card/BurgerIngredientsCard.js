@@ -17,7 +17,7 @@ export default function BurgerIngredientsCard({ image, count, price, name }) {
                     <CurrencyIcon type="primary" />
                 </div>
             </div>
-            
+
             <p className={BurgerIngredientsStyle.burger_ingredients_card_name}>
                 {name}
             </p>
@@ -27,7 +27,7 @@ export default function BurgerIngredientsCard({ image, count, price, name }) {
 
 BurgerIngredientsCard.propTypes = {
     "image": PropTypes.string.isRequired,
-    "count": PropTypes.string.isRequired,
+    "count": PropTypes.number.isRequired,
     "price": PropTypes.number.isRequired,
     "name": PropTypes.string.isRequired,
 }; 

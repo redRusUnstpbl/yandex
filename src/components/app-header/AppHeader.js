@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeaderStyles from './AppHeader.module.css';
 import AppHeaderButton from './app-header-button/AppHeaderButton';
 
 export default function AppHeader() {
-    const [ headerButtons, setHeaderButtons ] = useState({
+    const headerButtons = {
         leftSide: [
             {
                 component: 'BurgerIcon',
@@ -24,28 +23,28 @@ export default function AppHeader() {
                 text: 'Личный кабинет'
             },
         ]
-    });
+    }
 
-    return(
+    return (
         <header className={AppHeaderStyles.header}>
-            {headerButtons.leftSide && 
+            {headerButtons.leftSide &&
                 <div className={AppHeaderStyles.header_items}>
-                    {headerButtons.leftSide.map(function(button, i){
+                    {headerButtons.leftSide.map(function (button, i) {
                         return (
-                            <div className={AppHeaderStyles.header_items_item} key={i}>
+                            <a href="#" className={AppHeaderStyles.header_items_item} key={i}>
                                 <AppHeaderButton button={button} />
-                            </div>
+                            </a>
                         )
                     })}
                 </div>
             }
-            {headerButtons.rightSide && 
+            {headerButtons.rightSide &&
                 <div className={AppHeaderStyles.header_items}>
-                    {headerButtons.rightSide.map(function(button, i){
+                    {headerButtons.rightSide.map(function (button, i) {
                         return (
-                            <div className={AppHeaderStyles.header_items_item} key={i}>
+                            <a href="#" className={AppHeaderStyles.header_items_item} key={i}>
                                 <AppHeaderButton button={button} />
-                            </div>
+                            </a>
                         )
                     })}
                 </div>

@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import BurgerIngredientStyle from './BurgerIngredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientsList from './burger-ingredients-list/burgerIngredientsList';
 
+const bun = "bun";
+const sauce = "sauce";
+const main = "main";
 
-export default function BurgerIngredient({data}) {
-    const [tab, setTab] = React.useState('bun');
+export default function BurgerIngredient({ data }) {
+    const [tab, setTab] = React.useState(bun);
+    const prepareBun = useMemo(() => data.filter(x => x.type === bun), [data]);
+    const prepareSauce = useMemo(() => data.filter(x => x.type === sauce), [data]);
+    const prepareMain = useMemo(() => data.filter(x => x.type === main), [data]);
 
     let burgerList;
     // Для работы табов
@@ -24,9 +30,9 @@ export default function BurgerIngredient({data}) {
 
     // Для вывода как в шаблоне
     burgerList = <>
-        <BurgerIngredientsList data={data} title={"Булки"} type={'bun'} />
-        <BurgerIngredientsList data={data} title={"Соусы"} type={'sauce'} />
-        <BurgerIngredientsList data={data} title={"Начинки"} type={'main'} />
+        <BurgerIngredientsList data={prepareBun} title={"Булки"} />
+        <BurgerIngredientsList data={prepareSauce} title={"Соусы"} />
+        <BurgerIngredientsList data={prepareMain} title={"Начинки"} />
     </>;
 
     return (
@@ -34,9 +40,9 @@ export default function BurgerIngredient({data}) {
             <h1 className={BurgerIngredientStyle.burger_ingredient_title}>Соберите бургер</h1>
 
             <div className={BurgerIngredientStyle.burger_ingredient_tabs}>
-                <Tab value="bun" active={tab === 'bun'} onClick={setTab}>Булки</Tab>
-                <Tab value="sauce" active={tab === 'sauce'} onClick={setTab}>Соусы</Tab>
-                <Tab value="main" active={tab === 'main'} onClick={setTab}>Начинки</Tab>
+                <Tab value={bun} active={tab === bun} onClick={setTab}>Булки</Tab>
+                <Tab value={sauce} active={tab === sauce} onClick={setTab}>Соусы</Tab>
+                <Tab value={main} active={tab === main} onClick={setTab}>Начинки</Tab>
             </div>
 
             <div className={BurgerIngredientStyle.burger_ingredient_items}>
@@ -47,11 +53,11 @@ export default function BurgerIngredient({data}) {
 }
 
 BurgerIngredient.propTypes = {
-    "data": {
+    "data": PropTypes.arrayOf(PropTypes.shape({
         "_id": PropTypes.string.isRequired,
-       "name": PropTypes.string.isRequired,
-       "type": PropTypes.oneOf(['bun', 'sauce', 'main']),
-       "price": PropTypes.number.isRequired,
-       "image": PropTypes.string.isRequired,
-    }
+        "name": PropTypes.string.isRequired,
+        "type": PropTypes.oneOf(['bun', 'sauce', 'main']),
+        "price": PropTypes.number.isRequired,
+        "image": PropTypes.string.isRequired,
+    })).isRequired
 }; 

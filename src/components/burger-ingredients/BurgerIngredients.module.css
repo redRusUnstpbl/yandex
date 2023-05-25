@@ -1,17 +1,17 @@
-.burger_ingredient{
+.burger_ingredient {
     margin: 40px 0;
 }
 
-.burger_ingredient_title{
+.burger_ingredient_title {
     composes: text text_type_main-large from global;
     margin-bottom: 20px;
 }
 
-.burger_ingredient_tabs{
+.burger_ingredient_tabs {
     display: flex;
 }
 
-.burger_ingredient_items{
+.burger_ingredient_items {
     composes: custom-scroll from global;
     margin-top: 40px;
     overflow-y: auto;

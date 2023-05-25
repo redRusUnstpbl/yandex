@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorItemStyle from './BurgerConstructorItem.module.css';
 
-export default function BurgerConstructorItem({type, isLocked, text, price, thumbnail, isDrag}) {
+export default function BurgerConstructorItem({ type, isLocked, text, price, thumbnail, isDrag }) {
     return (
         <div className={BurgerConstructorItemStyle.burger_constructor_item}>
             {isDrag ?
-            <div className={BurgerConstructorItemStyle.burger_constructor_item_drag}>
-                <DragIcon type="primary"/>
-            </div>
-            :
-            <div className={BurgerConstructorItemStyle.burger_constructor_item_no_drag}></div>
+                <div className={BurgerConstructorItemStyle.burger_constructor_item_drag}>
+                    <DragIcon type="primary" />
+                </div>
+                :
+                <div className={BurgerConstructorItemStyle.burger_constructor_item_no_drag}></div>
             }
-            <ConstructorElement 
+            <ConstructorElement
                 type={type}
                 isLocked={isLocked}
                 text={text}
@@ -24,7 +24,7 @@ export default function BurgerConstructorItem({type, isLocked, text, price, thum
 }
 
 BurgerConstructorItem.propTypes = {
-    "type": PropTypes.string.isRequired,
+    "type": PropTypes.string,
     "isLocked": PropTypes.bool.isRequired,
     "text": PropTypes.string.isRequired,
     "price": PropTypes.number.isRequired,
