@@ -1,0 +1,45 @@
+import PropTypes from 'prop-types';
+import BurgerIngredientsListStyle from './burgerIngredientsList.module.css';
+import BurgerIngredientsCard from '../burger-ingredients-card/BurgerIngredientsCard';
+
+export default function BurgerIngredientsList({ data, title, type }) {
+
+    let burgerIngredientsCards = data.map(function(item) {
+        if (item.type == type) {
+            return (
+                <div className={BurgerIngredientsListStyle.burger_ingredients_list_item} key={item._id}>
+                    <BurgerIngredientsCard image={item.image} count={1} price={item.price} name={item.name}/>
+                </div>
+            )
+        }
+    });
+
+    return (
+        <div className={BurgerIngredientsListStyle.burger_ingredients_list_container}>
+            <h2 className={BurgerIngredientsListStyle.burger_ingredients_list_title}>
+                {title}
+            </h2>
+
+            {burgerIngredientsCards ?
+                <div className={BurgerIngredientsListStyle.burger_ingredients_list_items}>
+                    {burgerIngredientsCards}
+                </div>
+            :
+                <p className="text text_type_main-small">
+                    В категории "{title}" нет элементов.
+                </p>
+            }
+        </div>  
+    );
+}
+
+BurgerIngredientsList.propTypes = {
+    "data": {
+        "_id": PropTypes.string.isRequired,
+        "name": PropTypes.string.isRequired,
+        "price": PropTypes.number.isRequired,
+        "image": PropTypes.string.isRequired,
+    },
+    "title": PropTypes.string.isRequired,
+    "type": PropTypes.string.isRequired,
+}; 

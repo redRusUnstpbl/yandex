@@ -1,0 +1,36 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0; 
+    height: 88px;
+    margin-left: -20px;
+    margin-right: -20px;
+    position: relative;
+}
+
+.header_items{
+    display: inline-flex;
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+.header_items_item{
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.header_logo{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 24px;
+    margin: auto;
+    height: 40px;
+    line-height: 0;
+}
+
+.header_logo svg{
+    height: 100%;
+}
