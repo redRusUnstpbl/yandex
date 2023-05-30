@@ -3,10 +3,10 @@ import BurgerIngredientsListStyle from './burgerIngredientsList.module.css';
 import BurgerIngredientsCard from '../burger-ingredients-card/BurgerIngredientsCard';
 
 export default function BurgerIngredientsList({ data, title }) {
-    let burgerIngredientsCards = data.map(function (item) {
+    const burgerIngredientsCards = data.map(function (item) {
         return (
             <div className={BurgerIngredientsListStyle.burger_ingredients_list_item} key={item._id}>
-                <BurgerIngredientsCard image={item.image} count={1} price={item.price} name={item.name} />
+                <BurgerIngredientsCard data={item} count={1} />
             </div>
         )
     });

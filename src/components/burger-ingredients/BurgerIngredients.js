@@ -16,24 +16,17 @@ export default function BurgerIngredient({ data }) {
 
     let burgerList;
     // Для работы табов
-    // switch(tab) {
-    //     case 'bun':
-    //         burgerList = <BurgerIngredientsList data={data} title={"Булки"} type={'bun'} />
-    //         break
-    //     case 'sauce':
-    //         burgerList = <BurgerIngredientsList data={data} title={"Соусы"} type={'sauce'} />
-    //         break
-    //     case 'main':
-    //         burgerList = <BurgerIngredientsList data={data} title={"Начинки"} type={'main'} />
-    //         break
-    // }
-
-    // Для вывода как в шаблоне
-    burgerList = <>
-        <BurgerIngredientsList data={prepareBun} title={"Булки"} />
-        <BurgerIngredientsList data={prepareSauce} title={"Соусы"} />
-        <BurgerIngredientsList data={prepareMain} title={"Начинки"} />
-    </>;
+    switch(tab) {
+        case 'bun':
+            burgerList = <BurgerIngredientsList data={prepareBun} title={"Булки"} type={'bun'} />
+            break
+        case 'sauce':
+            burgerList = <BurgerIngredientsList data={prepareSauce} title={"Соусы"} type={'sauce'} />
+            break
+        case 'main':
+            burgerList = <BurgerIngredientsList data={prepareMain} title={"Начинки"} type={'main'} />
+            break
+    }
 
     return (
         <section className={BurgerIngredientStyle.burger_ingredient}>
