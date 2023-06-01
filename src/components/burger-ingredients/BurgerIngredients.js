@@ -52,5 +52,5 @@ BurgerIngredient.propTypes = {
         "type": PropTypes.oneOf(['bun', 'sauce', 'main']),
         "price": PropTypes.number.isRequired,
         "image": PropTypes.string.isRequired,
-    })).isRequired
+    }).isRequired).isRequired
 }; 

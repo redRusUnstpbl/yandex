@@ -10,7 +10,7 @@ export default function BurgerConstructor({ data }) {
     const sum = useMemo(() => data.reduce((sum, cur) => sum + cur.price, 0), [data]);
 
     const [modal, setModal] = useState(false);
-    
+
     const modalClose = () => {
         setModal(false);
     }
