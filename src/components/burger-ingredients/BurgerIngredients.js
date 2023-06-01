@@ -17,14 +17,14 @@ export default function BurgerIngredient({ data }) {
     let burgerList;
     // Для работы табов
     switch(tab) {
-        case 'bun':
-            burgerList = <BurgerIngredientsList data={prepareBun} title={"Булки"} type={'bun'} />
+        case bun:
+            burgerList = <BurgerIngredientsList data={prepareBun} title={"Булки"} type={bun} />
             break
-        case 'sauce':
-            burgerList = <BurgerIngredientsList data={prepareSauce} title={"Соусы"} type={'sauce'} />
+        case sauce:
+            burgerList = <BurgerIngredientsList data={prepareSauce} title={"Соусы"} type={sauce} />
             break
-        case 'main':
-            burgerList = <BurgerIngredientsList data={prepareMain} title={"Начинки"} type={'main'} />
+        case main:
+            burgerList = <BurgerIngredientsList data={prepareMain} title={"Начинки"} type={main} />
             break
     }
 

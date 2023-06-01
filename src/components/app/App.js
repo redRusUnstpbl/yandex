@@ -18,7 +18,7 @@ function App() {
     setState({ data: [], isLoading: true, hasError: false });
 
     fetch(`${API}/ingredients`)
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
       .then(data => setState({ data: data.data, isLoading: false, hasError: false }))
       .catch(e => {
         setState({ data: [], isLoading: false, hasError: true })
