@@ -1,0 +1,17 @@
+.burger_constructor_item {
+    display: flex;
+    align-items: center;
+}
+
+.burger_constructor_item_drag {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.burger_constructor_item_no_drag {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}

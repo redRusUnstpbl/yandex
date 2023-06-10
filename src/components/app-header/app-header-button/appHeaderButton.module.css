@@ -1,0 +1,33 @@
+.header_button {
+    composes: text text_type_main-default from global;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 40px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 20px;
+    border: 1px dashed var(--colors-interface-accent);
+    color: var(--text-primary-color);
+}
+
+.header_button_disabled {
+    composes: text text_type_main-default text_color_inactive from global;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 40px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+    padding: 0 20px;
+    border: 1px dashed var(--colors-interface-accent);
+    color: var(--text-inactive-color);
+}
+
+.header_button span,
+.header_button_disabled span {
+    margin-left: 8px;
+    display: inline-block;
+}
