@@ -1,5 +1,6 @@
 .burger_ingredient {
     margin: 40px 0;
+    position: relative;
 }
 
 .burger_ingredient_title {

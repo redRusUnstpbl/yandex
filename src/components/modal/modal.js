@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../../services/actions/detail';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalStyle from './modal.module.css';
 import ModalOverlay from './modal-overlay/modalOverlay';
@@ -11,26 +13,20 @@ function createWrapperAndAppendToBody(wrapperId) {
     return wrapperElement;
 }
 
-export default function Modal({ children, title, handleClose, wrapperId = "react-modals" }) {
-    const [visible, setVisible] = React.useState(true);
-
+export default function Modal({ children, title, wrapperId = "react-modals" }) {
     useEffect(() => {
         document.body.addEventListener("keydown", onKeyDown);
-
-        return () => {
-            document.body.removeEventListener("keydown", onKeyDown);
-        };
+        return () => { document.body.removeEventListener("keydown", onKeyDown) };
     }, []);
 
-    const closeModal = () => {
-        setVisible(false);
-        handleClose();
+    const dispatch = useDispatch();
+
+    const handleCloseModal = () => {
+        dispatch(closeModal());
     }
 
     const onKeyDown = (e) => {
-        if (e.key === "Escape") {
-            closeModal()
-        }
+        if (e.key === "Escape") handleCloseModal()
     }
 
     let root = document.getElementById(wrapperId);
@@ -39,23 +35,19 @@ export default function Modal({ children, title, handleClose, wrapperId = "react
     }
 
     return createPortal(
-        <>
-            {visible && (
-                <ModalOverlay>
-                    <div className={ModalStyle.modal}>
-                        <div className={ModalStyle.modal_header}>
-                            <p className={ModalStyle.modal_header_value}>{title}</p>
-                            <button className={ModalStyle.modal_header_close} onClick={closeModal}>
-                                <CloseIcon type="primary" />
-                            </button>
-                        </div>
-                        <div className={ModalStyle.modal_body}>
-                            {children}
-                        </div>
-                    </div>
-                </ModalOverlay>
-            )}
-        </>,
+        <ModalOverlay>
+            <div className={ModalStyle.modal}>
+                <div className={ModalStyle.modal_header}>
+                    <p className={ModalStyle.modal_header_value}>{title}</p>
+                    <button className={ModalStyle.modal_header_close} onClick={handleCloseModal}>
+                        <CloseIcon type="primary" />
+                    </button>
+                </div>
+                <div className={ModalStyle.modal_body}>
+                    {children}
+                </div>
+            </div>
+        </ModalOverlay>,
         root
     );
 }

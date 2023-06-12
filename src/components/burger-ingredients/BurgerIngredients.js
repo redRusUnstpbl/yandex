@@ -1,56 +1,122 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import BurgerIngredientStyle from './BurgerIngredients.module.css'
+import { useMemo, useState, useEffect, useRef, createRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import BurgerIngredientStyle from './BurgerIngredients.module.css'
 import BurgerIngredientsList from './burger-ingredients-list/burgerIngredientsList';
 
 const bun = "bun";
 const sauce = "sauce";
 const main = "main";
+const scrollOpt = {
+  behavior: "smooth",
+};
 
-export default function BurgerIngredient({ data }) {
-    const [tab, setTab] = React.useState(bun);
-    const prepareBun = useMemo(() => data.filter(x => x.type === bun), [data]);
-    const prepareSauce = useMemo(() => data.filter(x => x.type === sauce), [data]);
-    const prepareMain = useMemo(() => data.filter(x => x.type === main), [data]);
+export default function BurgerIngredient() {
+  const containerRef = useRef(null);
+  const bunRef = createRef(null);
+  const sauceRef = createRef(null);
+  const mainRef = createRef(null);
 
-    let burgerList;
-    // Для работы табов
-    switch(tab) {
-        case bun:
-            burgerList = <BurgerIngredientsList data={prepareBun} title={"Булки"} type={bun} />
-            break
-        case sauce:
-            burgerList = <BurgerIngredientsList data={prepareSauce} title={"Соусы"} type={sauce} />
-            break
-        case main:
-            burgerList = <BurgerIngredientsList data={prepareMain} title={"Начинки"} type={main} />
-            break
+  const [tab, setTab] = useState(bun);
+  const [scrollTop, setScrollTop] = useState(0);
+
+  const handleScroll = (event) => {
+    setScrollTop(event.currentTarget.scrollTop);
+  };
+
+  const handleSetTab = (info) => {
+    if (info.top <= 10) {
+      setTab(info.type);
     }
+  }
 
-    return (
-        <section className={BurgerIngredientStyle.burger_ingredient}>
-            <h1 className={BurgerIngredientStyle.burger_ingredient_title}>Соберите бургер</h1>
+  const handleClickTab = (info) => {
+    switch (info) {
+      case bun: {
+        bunRef.current.scrollIntoView(scrollOpt);
+        break;
+      }
+      case sauce: {
+        sauceRef.current.scrollIntoView(scrollOpt);
+        break;
+      }
+      case main: {
+        mainRef.current.scrollIntoView(scrollOpt);
+        break;
+      }
+    }
+  }
 
-            <div className={BurgerIngredientStyle.burger_ingredient_tabs}>
-                <Tab value={bun} active={tab === bun} onClick={setTab}>Булки</Tab>
-                <Tab value={sauce} active={tab === sauce} onClick={setTab}>Соусы</Tab>
-                <Tab value={main} active={tab === main} onClick={setTab}>Начинки</Tab>
-            </div>
+  const items = useSelector(state => state.ingredients.items);
+  const tabData = [
+    {
+      type: bun,
+      title: "Булки",
+      data: useMemo(() => items.filter(x => x.type === bun), [items]),
+      onClick: handleClickTab,
+      scrollTop: scrollTop,
+      handleTab: handleSetTab,
+      active: tab === bun,
+      ref: bunRef,
+      containerRef: containerRef
+    },
+    {
+      type: sauce,
+      title: "Соусы",
+      data: useMemo(() => items.filter(x => x.type === sauce), [items]),
+      onClick: handleClickTab,
+      scrollTop: scrollTop,
+      handleTab: handleSetTab,
+      active: tab === sauce,
+      ref: sauceRef,
+      containerRef: containerRef
+    },
+    {
+      type: main,
+      title: "Начинки",
+      data: useMemo(() => items.filter(x => x.type === main), [items]),
+      onClick: handleClickTab,
+      scrollTop: scrollTop,
+      handleTab: handleSetTab,
+      active: tab === main,
+      ref: mainRef,
+      containerRef: containerRef
+    }
+  ];
 
-            <div className={BurgerIngredientStyle.burger_ingredient_items}>
-                {burgerList}
-            </div>
-        </section>
-    )
+  const burgerList = useMemo(() => tabData.map(function (item) {
+    return <BurgerIngredientsList
+      data={item.data}
+      title={item.title}
+      type={item.type}
+      key={item.type}
+      scrollTop={item.scrollTop}
+      handleSetTab={handleSetTab}
+      ref={item.ref}
+      containerRef={item.containerRef}
+    />
+  }), [tabData]);
+
+  const burgerTabs = useMemo(() => tabData.map(function (item) {
+    return <Tab value={item.type} active={item.active} onClick={item.onClick} key={item.type}>{item.title}</Tab>
+  }), [tabData]);
+
+
+  return (
+    <section className={BurgerIngredientStyle.burger_ingredient}>
+      <h1 className={BurgerIngredientStyle.burger_ingredient_title}>Соберите бургер</h1>
+
+      <div className={BurgerIngredientStyle.burger_ingredient_tabs}>
+        {burgerTabs}
+      </div>
+
+      <div
+        ref={containerRef}
+        className={BurgerIngredientStyle.burger_ingredient_items}
+        onScroll={handleScroll}
+      >
+        {burgerList}
+      </div>
+    </section>
+  )
 }
-
-BurgerIngredient.propTypes = {
-    "data": PropTypes.arrayOf(PropTypes.shape({
-        "_id": PropTypes.string.isRequired,
-        "name": PropTypes.string.isRequired,
-        "type": PropTypes.oneOf(['bun', 'sauce', 'main']),
-        "price": PropTypes.number.isRequired,
-        "image": PropTypes.string.isRequired,
-    }).isRequired).isRequired
-}; 
