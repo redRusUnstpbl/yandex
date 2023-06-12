@@ -45,18 +45,21 @@ function prepareInfo(data) {
 
 export default function BurgerIngredientsCard({ data, count }) {
   const dispatch = useDispatch();
-  const info = useMemo(() => prepareInfo(data), [data]);
-  const modal = useSelector(store => store.detail.id);
+  const getDataModal = (state) => state.detail.id;
+  
+  const modal = useSelector(getDataModal);
   const modalVisible = modal && modal === data._id;
   const showModalHandler = () => { dispatch(showModal(data._id)) };
 
-  const [{ isDrag }, drag] = useDrag({
+  const [, drag] = useDrag({
     type: "ingredient",
     item: { data },
     collect: monitor => ({
       isDrag: monitor.isDragging()
     })
   });
+
+  const info = useMemo(() => prepareInfo(data), [data]);
   
   return (
     <>

@@ -47,7 +47,8 @@ export default function BurgerIngredient() {
     }
   }
 
-  const items = useSelector(state => state.ingredients.items);
+  const getDataIngredients = (state) => state.ingredients.items;
+  const items = useSelector(getDataIngredients);
   const tabData = [
     {
       type: bun,

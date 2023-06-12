@@ -10,9 +10,10 @@ import BurgerIngredient from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 
 function App() {
-  const { items, itemsRequest, itemsFailed } = useSelector(state => state.ingredients);
+  const getData = (state) => state.ingredients;
+  const { items, itemsRequest, itemsFailed } = useSelector(getData);
   const dispatch = useDispatch();
-
+ 
   useEffect(
     () => {
       dispatch(getIngredients(API + '/ingredients'));

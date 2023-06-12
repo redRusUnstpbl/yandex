@@ -16,12 +16,17 @@ const bun = 'bun';
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
-  const modal = useSelector(store => store.detail.id);
+  const getDataModal = (state) => state.detail.id;
+  const getDataOrder = (state) => state.order.order;
+  const getDataMain = (state) => state.construct.items;
+  const getDataBun = (state) => state.construct.bun
+
+  const modal = useSelector(getDataModal);
   const modalVisible = modal && modal === 'order_details';
 
-  const order = useSelector(store => store.order.order)
-  const dataMain = useSelector(store => store.construct.items);
-  const dataBun = useSelector(store => store.construct.bun);
+  const order = useSelector(getDataOrder)
+  const dataMain = useSelector(getDataMain);
+  const dataBun = useSelector(getDataBun);
   const items = dataBun ? dataMain.concat(dataBun) : dataMain;
   const sum = useMemo(() => items.reduce((sum, cur) => cur.type === bun ? sum + (cur.price * 2) : sum + cur.price, 0), [items]);
 
