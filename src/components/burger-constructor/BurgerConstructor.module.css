@@ -3,13 +3,20 @@
 }
 
 .burger_constructor_items {
-    margin-bottom: 40px;
-    padding: 0 16px;
+    margin-bottom: 25px;
+    margin-top: -15px;
+    padding: 15px;
+    border-radius: 40px;
+    border: 1px solid transparent;
+}
+
+.burger_constructor_bun_top{
+    margin-bottom: 16px;
 }
 
 .burger_constructor_list {
     composes: custom-scroll from global;
-    margin: 16px 0;
+    margin: 0 0 16px;
     overflow-y: auto;
     max-height: 656px;
     scrollbar-gutter: stable both-edges;
@@ -21,6 +28,11 @@
     padding-right: 8px;
     margin-left: -12px;
     margin-right: -20px;
+}
+
+.burger_constructor_text_info{
+    composes: text text_type_main-medium from global;
+    text-align: center;
 }
 
 .burger_constructor_price {
@@ -37,4 +49,16 @@
 
 .burger_constructor_price_value span {
     margin-right: 8px;
+}
+
+.drop_target{
+    min-height: 400px;
+    border: 1px dashed var(--colors-interface-accent);
+}
+.drop_on_target{
+    border: 1px dashed var(--colors-interface-success);
+}
+
+.burger_constructor_price_disabled .burger_constructor_price_value{
+    color: var(--text-inactive-color);
 }
