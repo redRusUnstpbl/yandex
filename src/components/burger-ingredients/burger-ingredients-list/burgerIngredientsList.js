@@ -15,10 +15,10 @@ const BurgerIngredientsList = forwardRef((props, ref) => {
       heigth: children.height,
       type: type
     });
-  }, [scrollTop]);
+  }, [scrollTop, containerRef, handleSetTab, ref, type]);
 
   const burgerIngredientsCards = useMemo(() => data.map(function (item) {
-    if (item.type === 'bun' && item.cnt > 0) return;
+    if (item.type === 'bun' && item.cnt > 0) return null;
 
     return (
       <div className={BurgerIngredientsListStyle.burger_ingredients_list_item} key={item._id}>

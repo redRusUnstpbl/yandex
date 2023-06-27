@@ -1,43 +1,56 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients } from '../../services/actions/ingredients';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { API } from '../../utils/api';
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { OnlyUnAuth, OnlyAuth } from '../protected-route/ProtectedRoute';
+import { checkUserAuth } from '../../services/actions/user';
 import AppStyles from './App.module.css';
 import AppHeader from '../app-header/AppHeader';
-import BurgerIngredient from '../burger-ingredients/BurgerIngredients';
-import BurgerConstructor from '../burger-constructor/BurgerConstructor';
+import PageHome from '../../pages/page-home/PageHome';
+import Page404 from '../../pages/page-error/Page404';
+import PageLogin from '../../pages/page-login/PageLogin';
+import PageRegister from '../../pages/page-register/PageRegister';
+import PageProfile from "../../pages/page-profile/PageProfile";
+import PagePasswordForgot from "../../pages/page-password/page-password-forgot/PagePasswordForgot";
+import PagePasswordReset from "../../pages/page-password/page-password-reset/PagePasswordReset";
+import IngredientsDetails from "../ingredient-details/IngredientDetails";
+import Modal from "../modal/modal";
 
 function App() {
-  const getData = (state) => state.ingredients;
-  const { items, itemsRequest, itemsFailed } = useSelector(getData);
   const dispatch = useDispatch();
- 
-  useEffect(
-    () => {
-      dispatch(getIngredients(API + '/ingredients'));
-    },
-    [dispatch]
-  );
+  const location = useLocation();
+  const background = location.state && location.state.background;
+
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, [dispatch])
 
   return (
     <div className={AppStyles.app}>
       <AppHeader />
       <main className={AppStyles.main}>
-        {itemsRequest && (
-          <p className="text text_type_main-default text_color_inactive">Загрузка...</p>
-        )}
-        {itemsFailed && (
-          <p className="text text_type_main-default text_color_inactive">Произошла ошибка</p>
-        )}
-        {!itemsRequest && !itemsFailed && items.length &&
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredient />
-            <BurgerConstructor data={items} />
-          </DndProvider>
-        }
+        <Routes location={background || location}>
+          <Route path='/' element={<PageHome />} />
+          <Route path='/ingredients/:ingredientId' element={<IngredientsDetails isPage={true} />} />
+          <Route path='/login' element={<OnlyUnAuth component={<PageLogin />} />} />
+          <Route path='/register' element={<OnlyUnAuth component={<PageRegister />} />} />
+          <Route path='/forgot-password' element={<OnlyUnAuth component={<PagePasswordForgot />} />} />
+          <Route path='/reset-password' element={<OnlyUnAuth component={<PagePasswordReset />} />} />
+          <Route path='/profile' element={<OnlyAuth component={<PageProfile />} />} />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
 
+        {background && (
+          <Routes>
+            <Route
+              path='/ingredients/:ingredientId'
+              element={
+                <Modal title="Детали ингредиента">
+                  <IngredientsDetails isPage={false} />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
       </main>
     </div>
   );

@@ -20,7 +20,7 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         items: state.items.map(function(item) {
           let cnt = item.cnt;
-          if (item._id == action.item._id) {
+          if (item._id === action.item._id) {
             cnt += action.item.type === 'bun' ? 2 : 1;
           }
           
@@ -36,7 +36,7 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         items: state.items.map(function(item) {
           let cnt = item.cnt;
-          if (item._id == action.item._id) {
+          if (item._id === action.item._id) {
             cnt -= action.item.type === 'bun' ? 2 : 1;
           }
           

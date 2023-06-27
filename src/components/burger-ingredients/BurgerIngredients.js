@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef, createRef } from 'react';
+import { useMemo, useState, useRef, createRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientStyle from './BurgerIngredients.module.css'
@@ -44,6 +44,9 @@ export default function BurgerIngredient() {
         mainRef.current.scrollIntoView(scrollOpt);
         break;
       }
+
+      default: 
+        break;
     }
   }
 

@@ -1,6 +1,7 @@
 import { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { useNavigate } from "react-router-dom";
 import { API } from '../../utils/api';
 import { showModal } from '../../services/actions/detail';
 import { addElementToConstructor, removeElementFromConstructor } from '../../services/actions/constructor';
@@ -19,8 +20,11 @@ export default function BurgerConstructor() {
   const getDataModal = (state) => state.detail.id;
   const getDataOrder = (state) => state.order.order;
   const getDataMain = (state) => state.construct.items;
-  const getDataBun = (state) => state.construct.bun
-
+  const getDataBun = (state) => state.construct.bun;
+  const getUser = (state) => state.user;
+  
+  const navigate = useNavigate();
+  const user = useSelector(getUser);
   const modal = useSelector(getDataModal);
   const modalVisible = modal && modal === 'order_details';
 
@@ -31,18 +35,22 @@ export default function BurgerConstructor() {
   const sum = useMemo(() => items.reduce((sum, cur) => cur.type === bun ? sum + (cur.price * 2) : sum + cur.price, 0), [items]);
 
   const makeOrder = () => {
-    const ids = items.map(cur => cur._id);
+    if (!user.user) {
+      navigate('/login', { replace: true })
+    } else {
+      const ids = items.map(cur => cur._id);
 
-    dispatch(getOrder(API + '/orders', {
-      "ingredients": ids
-    }));
+      dispatch(getOrder(API + '/orders', {
+        "ingredients": ids
+      }));
+    }
   }
 
   useEffect(() => {
     if (order) {
       dispatch(showModal('order_details'));
     }
-  }, [order]);
+  }, [order, dispatch]);
 
   const [{ isHover, canDrop }, dropTarget] = useDrop({
     accept: 'ingredient',
