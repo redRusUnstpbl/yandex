@@ -1,23 +1,13 @@
 import { useRef } from 'react';
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../../../services/actions/detail';
+import PropTypes from 'prop-types';
 import ModalOverlayStyle from './modalOverlay.module.css'
 
-export default function ModalOverlay({ children }) {
+export default function ModalOverlay({ children, setCloseModal }) {
   const ref = useRef(null);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const getDataModal = (state) => state.detail.id;
-  const id = useSelector(getDataModal);
 
   const handleCloseModal = (e) => {
     if (e.target === ref.current) {
-      dispatch(closeModal());
-      
-      if (id !== 'order_details') {
-        navigate(-1);
-      }
+      setCloseModal()
     }
   }
 
@@ -27,3 +17,7 @@ export default function ModalOverlay({ children }) {
     </div>
   )
 }
+
+ModalOverlay.propTypes = {
+  "setCloseModal": PropTypes.func.isRequired,
+}; 

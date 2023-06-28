@@ -1,8 +1,11 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { OnlyUnAuth, OnlyAuth } from '../protected-route/ProtectedRoute';
 import { checkUserAuth } from '../../services/actions/user';
+import { getIngredients } from "../../services/actions/ingredients";
+import { closeModal } from "../../services/actions/detail";
+import { API } from "../../utils/api";
 import AppStyles from './App.module.css';
 import AppHeader from '../app-header/AppHeader';
 import PageHome from '../../pages/page-home/PageHome';
@@ -17,12 +20,19 @@ import Modal from "../modal/modal";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const background = location.state && location.state.background;
 
+  const setCloseModal = () => {
+    dispatch(closeModal());
+    navigate(-1);
+  }
+
   useEffect(() => {
     dispatch(checkUserAuth());
-  }, [dispatch])
+    dispatch(getIngredients(API + '/ingredients'));
+  }, [dispatch]);
 
   return (
     <div className={AppStyles.app}>
@@ -36,6 +46,7 @@ function App() {
           <Route path='/forgot-password' element={<OnlyUnAuth component={<PagePasswordForgot />} />} />
           <Route path='/reset-password' element={<OnlyUnAuth component={<PagePasswordReset />} />} />
           <Route path='/profile' element={<OnlyAuth component={<PageProfile />} />} />
+          <Route path='/profile/history' element={<OnlyAuth component={<PageProfile />} />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
 
@@ -44,7 +55,7 @@ function App() {
             <Route
               path='/ingredients/:ingredientId'
               element={
-                <Modal title="Детали ингредиента">
+                <Modal title="Детали ингредиента" setCloseModal={setCloseModal}>
                   <IngredientsDetails isPage={false} />
                 </Modal>
               }

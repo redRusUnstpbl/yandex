@@ -1,11 +1,11 @@
 import { useDrag } from 'react-dnd';
-import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientsStyle from './BurgerIngredientsCard.module.css';
 import { showModal } from '../../../services/actions/detail';
+import { BurgerIngredientsCardProps } from '../../../utils/types';
 
 export default function BurgerIngredientsCard({ data, count }) {
   const location = useLocation();
@@ -59,15 +59,4 @@ export default function BurgerIngredientsCard({ data, count }) {
   )
 }
 
-BurgerIngredientsCard.propTypes = {
-  "data": PropTypes.shape({
-    "_id": PropTypes.string.isRequired,
-    "name": PropTypes.string.isRequired,
-    "price": PropTypes.number.isRequired,
-    "image": PropTypes.string.isRequired,
-    "calories": PropTypes.number.isRequired,
-    "proteins": PropTypes.number.isRequired,
-    "fat": PropTypes.number.isRequired,
-    "carbohydrates": PropTypes.number.isRequired,
-  }).isRequired,
-}; 
+BurgerIngredientsCard.propTypes = BurgerIngredientsCardProps; 

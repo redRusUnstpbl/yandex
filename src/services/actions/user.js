@@ -1,5 +1,6 @@
 import { API } from "../../utils/api";
 import { setCookie, getCookie } from "../utils";
+import { checkResponse } from "../../utils/api";
 
 export const SET_IS_REQUEST = "SET_IS_REQUEST";
 export const SET_IS_FAILED = "SET_IS_FAILED";
@@ -32,8 +33,6 @@ export function checkUserAuth() {
         request: SET_USER
       });
 
-      console.log(getCookie('refreshToken'));
-
       fetch(API + '/auth/user', {
         method: "GET",
         headers: {
@@ -41,9 +40,8 @@ export function checkUserAuth() {
           authorization: getCookie('accessToken')
         },
       })
-        .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+        .then(checkResponse)
         .then(res => {
-
           dispatch({
             type: SET_USER,
             user: res.user,
@@ -84,7 +82,7 @@ export function refreshToken() {
         token: getCookie('refreshToken')
       })
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
@@ -115,7 +113,7 @@ export function register(data) {
       },
       body: JSON.stringify(data),
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
@@ -149,7 +147,7 @@ export function login(data) {
       },
       body: JSON.stringify(data),
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
@@ -185,7 +183,7 @@ export function logout() {
         token: getCookie('refreshToken')
       })
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
         setCookie("accessToken", null);
         setCookie("refreshToken", null);
@@ -220,7 +218,7 @@ export const updateUser = (data) => async (dispatch) => {
       },
       body: JSON.stringify(data),
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
         dispatch({
           type: SET_USER_UPDATE,
@@ -251,7 +249,7 @@ export const forgotPassword = (data) => async (dispatch) => {
       },
       body: JSON.stringify(data),
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
         dispatch({
           type: SET_PASSWORD_FORGOT,
@@ -285,7 +283,7 @@ export const resetPassword = (data) => async (dispatch) => {
       },
       body: JSON.stringify(data),
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
         dispatch({
           type: SET_PASSWORD_RESET,

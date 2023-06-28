@@ -55,7 +55,7 @@ export default function AppHeader() {
                     </div>
                 }
                 <div className={AppHeaderStyles.header_logo}>
-                    <Logo />
+                    <Link to={'/'}><Logo /></Link>
                 </div>
             </div>
         </header>

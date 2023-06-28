@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PageProfileStyles from './PageProfile.module.css';
 import PageProfileMain from './page-profile-main/PageProfileMain';
@@ -6,11 +7,21 @@ import { Link } from "react-router-dom";
 import { logout } from '../../services/actions/user';
 
 const PROFILE = "PROFILE";
+const HISTORY = "HISTORY";
 const LOGOUT = "LOGOUT";
 
 function PageProfile() {
-    const [active, setActive] = useState(PROFILE);
+    const [active, setActive] = useState('');
     const dispatch = useDispatch();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname === '/profile/history') {
+            setActive(HISTORY);
+        } else {
+            setActive(PROFILE);
+        }
+    }, [location]);
 
     const onLogout = (e) => {
         e.preventDefault();
@@ -21,10 +32,10 @@ function PageProfile() {
         <div className={PageProfileStyles.profile}>
             <div className={PageProfileStyles.profile_links}>
                 <div className={active === PROFILE ? PageProfileStyles.profile_links_link_active : PageProfileStyles.profile_links_link}>
-                    <Link>Профиль</Link>
+                    <Link to="/profile">Профиль</Link>
                 </div>
-                <div className={PageProfileStyles.profile_links_link}>
-                    <Link>История заказов</Link>
+                <div className={active === HISTORY ? PageProfileStyles.profile_links_link_active : PageProfileStyles.profile_links_link}>
+                    <Link to="/profile/history">История заказов</Link>
                 </div>
                 <div className={active === LOGOUT ? PageProfileStyles.profile_links_link_active : PageProfileStyles.profile_links_link}>
                     <Link to='/logout' onClick={onLogout}>Выход</Link>

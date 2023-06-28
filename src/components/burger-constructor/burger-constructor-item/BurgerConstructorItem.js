@@ -1,11 +1,10 @@
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
+import { BurgerConstructorItemProps } from '../../../utils/types';
 import { moveElementInConstructor } from '../../../services/actions/constructor';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorItemStyle from './BurgerConstructorItem.module.css';
-
 
 export default function BurgerConstructorItem({ type, isLocked, text, price, thumbnail, isDrag, index, onDeleteItem }) {
   const ref = useRef(null);
@@ -77,13 +76,4 @@ export default function BurgerConstructorItem({ type, isLocked, text, price, thu
   )
 }
 
-BurgerConstructorItem.propTypes = {
-  "type": PropTypes.string,
-  "isLocked": PropTypes.bool.isRequired,
-  "text": PropTypes.string.isRequired,
-  "price": PropTypes.number.isRequired,
-  "thumbnail": PropTypes.string.isRequired,
-  "isDrag": PropTypes.bool,
-  "index": PropTypes.number.isRequired,
-  "onDeleteItem": PropTypes.func.isRequired,
-}; 
+BurgerConstructorItem.propTypes = BurgerConstructorItemProps; 

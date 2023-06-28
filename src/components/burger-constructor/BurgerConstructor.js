@@ -1,9 +1,10 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { useNavigate } from "react-router-dom";
 import { API } from '../../utils/api';
 import { showModal } from '../../services/actions/detail';
+import { closeModal } from '../../services/actions/detail';
 import { addElementToConstructor, removeElementFromConstructor } from '../../services/actions/constructor';
 import { incrIngredient, decrIngredient } from '../../services/actions/ingredients';
 import { getOrder } from '../../services/actions/order';
@@ -42,15 +43,17 @@ export default function BurgerConstructor() {
 
       dispatch(getOrder(API + '/orders', {
         "ingredients": ids
-      }));
+      })).then(function(result){
+        if (result.success) {
+          dispatch(showModal('order_details'));
+        }
+      });
     }
   }
 
-  useEffect(() => {
-    if (order) {
-      dispatch(showModal('order_details'));
-    }
-  }, [order, dispatch]);
+  const setCloseModal = () => {
+    dispatch(closeModal());
+  }
 
   const [{ isHover, canDrop }, dropTarget] = useDrop({
     accept: 'ingredient',
@@ -170,7 +173,7 @@ export default function BurgerConstructor() {
       </section>
 
       {modalVisible && (
-        <Modal>
+        <Modal setCloseModal={setCloseModal}>
           <OrderDetails orderId={order.order.number} />
         </Modal>
       )}

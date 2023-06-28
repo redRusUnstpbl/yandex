@@ -54,12 +54,6 @@ export default function IngredientsDetails({ isPage }) {
     id = ingredientId;
   }
 
-  useEffect(() => {
-    if (ingredients.length === 0) {
-      dispatch(getIngredients(API + '/ingredients'))
-    }
-  }, [dispatch, ingredients]);
-
   const data = useMemo(() => ingredients.filter(x => x._id === id), [ingredients, id]);
   const info = useMemo(() => prepareInfo(data[0]), [data]);
 

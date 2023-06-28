@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../../services/actions/detail';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalStyle from './modal.module.css';
 import ModalOverlay from './modal-overlay/modalOverlay';
@@ -14,27 +12,18 @@ function createWrapperAndAppendToBody(wrapperId) {
   return wrapperElement;
 }
 
-export default function Modal({ children, title, wrapperId = "react-modals" }) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const getDataModal = (state) => state.detail.id;
-  const id = useSelector(getDataModal);
-  
+export default function Modal({ children, title, setCloseModal, wrapperId = "react-modals" }) {  
   useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setCloseModal();
+    }
+
     document.body.addEventListener("keydown", onKeyDown);
     return () => { document.body.removeEventListener("keydown", onKeyDown) };
-  }, []);
+  }, [setCloseModal]);
 
   const handleCloseModal = () => {
-    dispatch(closeModal());
-
-    if (id !== 'order_details') {
-      navigate(-1);
-    }
-  }
-
-  const onKeyDown = (e) => {
-    if (e.key === "Escape") handleCloseModal()
+    setCloseModal();
   }
 
   let root = document.getElementById(wrapperId);
@@ -43,7 +32,7 @@ export default function Modal({ children, title, wrapperId = "react-modals" }) {
   }
 
   return createPortal(
-    <ModalOverlay>
+    <ModalOverlay setCloseModal={setCloseModal}>
       <div className={ModalStyle.modal}>
         <div className={ModalStyle.modal_header}>
           <p className={ModalStyle.modal_header_value}>{title}</p>
@@ -59,3 +48,9 @@ export default function Modal({ children, title, wrapperId = "react-modals" }) {
     root
   );
 }
+
+Modal.propTypes = {
+  "title": PropTypes.string,
+  "setCloseModal": PropTypes.func.isRequired,
+  "wrapperId": PropTypes.string,
+}; 

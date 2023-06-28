@@ -1,7 +1,7 @@
 import { useMemo, useEffect, forwardRef } from 'react';
-import PropTypes from 'prop-types';
 import BurgerIngredientsListStyle from './burgerIngredientsList.module.css';
 import BurgerIngredientsCard from '../burger-ingredients-card/BurgerIngredientsCard';
+import { BurgerIngredientsListProps } from '../../../utils/types';
 
 const BurgerIngredientsList = forwardRef((props, ref) => {
   const { data, title, type, scrollTop, handleSetTab, containerRef } = props;
@@ -47,16 +47,4 @@ const BurgerIngredientsList = forwardRef((props, ref) => {
 })
 
 export default BurgerIngredientsList;
-
-BurgerIngredientsList.propTypes = {
-  "data": PropTypes.arrayOf(PropTypes.shape({
-    "_id": PropTypes.string.isRequired,
-    "name": PropTypes.string.isRequired,
-    "price": PropTypes.number.isRequired,
-    "image": PropTypes.string.isRequired,
-  })).isRequired,
-  "title": PropTypes.string.isRequired,
-  "type": PropTypes.string.isRequired,
-  "scrollTop": PropTypes.number.isRequired,
-  "handleSetTab": PropTypes.func.isRequired,
-}; 
+BurgerIngredientsList.propTypes = BurgerIngredientsListProps; 
