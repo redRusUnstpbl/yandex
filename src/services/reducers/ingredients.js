@@ -4,7 +4,8 @@ import {
   GET_INGREDIENTS_FAILED,
   INCR_INGREDIENT,
   DECR_INGREDIENT,
-  REMOVE_INGREDIENT
+  REMOVE_INGREDIENT,
+  REMOVE_ALL_INGREDIENT
 } from '../actions/ingredients';
 
 const initialState = {
@@ -20,7 +21,7 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         items: state.items.map(function(item) {
           let cnt = item.cnt;
-          if (item._id == action.item._id) {
+          if (item._id === action.item._id) {
             cnt += action.item.type === 'bun' ? 2 : 1;
           }
           
@@ -36,7 +37,7 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         items: state.items.map(function(item) {
           let cnt = item.cnt;
-          if (item._id == action.item._id) {
+          if (item._id === action.item._id) {
             cnt -= action.item.type === 'bun' ? 2 : 1;
           }
           
@@ -48,6 +49,17 @@ export const ingredientsReducer = (state = initialState, action) => {
       }
     }
     case REMOVE_INGREDIENT: {
+      return {
+        ...state,
+        items: state.items.map(function(item) {
+          return {
+            ...item,
+            cnt: 0
+          };
+        })
+      }
+    }
+    case REMOVE_ALL_INGREDIENT: {
       return {
         ...state,
         items: state.items.map(function(item) {

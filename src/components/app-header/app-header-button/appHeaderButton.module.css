@@ -8,7 +8,6 @@
     align-items: center;
     cursor: pointer;
     padding: 0 20px;
-    border: 1px dashed var(--colors-interface-accent);
     color: var(--text-primary-color);
 }
 
@@ -22,7 +21,6 @@
     align-items: center;
     cursor: not-allowed;
     padding: 0 20px;
-    border: 1px dashed var(--colors-interface-accent);
     color: var(--text-inactive-color);
 }
 

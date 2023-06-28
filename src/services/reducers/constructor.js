@@ -2,6 +2,7 @@ import {
   ADD_CONSTRUCTOR_INGREDIENT,
   MOVE_CONSTRUCTOR_INGREDIENT,
   REMOVE_CONSTRUCTOR_INGREDIENT,
+  CLEAR_CONSTRUCTOR_INGREDIENT
 } from "../actions/constructor";
 
 const initialState = {
@@ -11,6 +12,13 @@ const initialState = {
 
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_CONSTRUCTOR_INGREDIENT: {
+      return {
+        ...state,
+        items: [],
+        bun: null
+      }
+    }
     case MOVE_CONSTRUCTOR_INGREDIENT: {
       const items = [...state.items];
       items.splice(action.indexDrag, 0, items.splice(action.indexHover, 1)[0]); 

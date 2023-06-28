@@ -1,9 +1,12 @@
+import { clearConstructor } from "./constructor";
+import { removeAllIngredients } from "./ingredients";
+import { checkResponse } from "../../utils/api";
 export const GET_ORDER_REQUEST = "GET_ORDER_REQUEST";
 export const GET_ORDER_SUCCESS = "GET_ORDER_SUCCESS";
 export const GET_ORDER_FAILED = "GET_ORDER_FAILED";
 
-export function getOrder(url, data) {
-  return function (dispatch) {
+export const getOrder = (url, data) => async (dispatch) => {
+  return await new Promise((resolve) => {
     dispatch({
       type: GET_ORDER_REQUEST
     });
@@ -15,17 +18,23 @@ export function getOrder(url, data) {
       },
       body: JSON.stringify(data),
     })
-      .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+      .then(checkResponse)
       .then(res => {
+        dispatch(clearConstructor());
+        dispatch(removeAllIngredients());
         dispatch({
           type: GET_ORDER_SUCCESS,
           order: res,
         });
+
+        resolve(res);
       })
       .catch(e => {
         dispatch({
           type: GET_ORDER_FAILED
         });
+
+        resolve(e);
       });
-  }
+  })
 }

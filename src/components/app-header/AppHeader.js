@@ -1,4 +1,5 @@
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from "react-router-dom";
 import AppHeaderStyles from './AppHeader.module.css';
 import AppHeaderButton from './app-header-button/AppHeaderButton';
 
@@ -8,49 +9,54 @@ export default function AppHeader() {
             {
                 component: 'BurgerIcon',
                 state: 'enable',
-                text: 'Конструктор'
+                text: 'Конструктор',
+                link: '/'
             },
             {
                 component: 'ListIcon',
                 state: 'disabled',
-                text: 'Лента заказов'
+                text: 'Лента заказов',
+                link: '#'
             },
         ],
         rightSide: [
             {
                 component: 'ProfileIcon',
-                state: 'disabled',
-                text: 'Личный кабинет'
+                state: 'enable',
+                text: 'Личный кабинет',
+                link: '/profile'
             },
         ]
     }
 
     return (
         <header className={AppHeaderStyles.header}>
-            {headerButtons.leftSide &&
-                <div className={AppHeaderStyles.header_items}>
-                    {headerButtons.leftSide.map(function (button, i) {
-                        return (
-                            <a href="#" className={AppHeaderStyles.header_items_item} key={i}>
-                                <AppHeaderButton button={button} />
-                            </a>
-                        )
-                    })}
+            <div className={AppHeaderStyles.header_container}>
+                {headerButtons.leftSide &&
+                    <div className={AppHeaderStyles.header_items}>
+                        {headerButtons.leftSide.map(function (button, i) {
+                            return (
+                                <Link to={button.link} className={AppHeaderStyles.header_items_item} key={i}>
+                                    <AppHeaderButton button={button} />
+                                </Link>
+                            )
+                        })}
+                    </div>
+                }
+                {headerButtons.rightSide &&
+                    <div className={AppHeaderStyles.header_items}>
+                        {headerButtons.rightSide.map(function (button, i) {
+                            return (
+                                <Link to={button.link} className={AppHeaderStyles.header_items_item} key={i}>
+                                    <AppHeaderButton button={button} />
+                                </Link>
+                            )
+                        })}
+                    </div>
+                }
+                <div className={AppHeaderStyles.header_logo}>
+                    <Link to={'/'}><Logo /></Link>
                 </div>
-            }
-            {headerButtons.rightSide &&
-                <div className={AppHeaderStyles.header_items}>
-                    {headerButtons.rightSide.map(function (button, i) {
-                        return (
-                            <a href="#" className={AppHeaderStyles.header_items_item} key={i}>
-                                <AppHeaderButton button={button} />
-                            </a>
-                        )
-                    })}
-                </div>
-            }
-            <div className={AppHeaderStyles.header_logo}>
-                <Logo />
             </div>
         </header>
     );
