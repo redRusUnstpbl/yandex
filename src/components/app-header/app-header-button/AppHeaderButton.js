@@ -6,7 +6,7 @@ export default function AppHeaderButton({ button }) {
     let component;
     let buttonClass = AppHeaderButtonStyles.header_button;
     let buttonType = 'primary';
-    if (button.state == 'disabled') {
+    if (button.state === 'disabled') {
         buttonClass = AppHeaderButtonStyles.header_button_disabled;
         buttonType = 'secondary';
     }
@@ -20,6 +20,8 @@ export default function AppHeaderButton({ button }) {
             break;
         case 'ProfileIcon':
             component = <ProfileIcon type={buttonType} />
+            break;
+        default:
             break;
     }
 

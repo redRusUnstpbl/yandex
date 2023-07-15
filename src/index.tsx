@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from './services/reducers';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from "react-router-dom";
 import App from './components/app/App';
 
 const store = configureStore({
@@ -22,7 +23,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

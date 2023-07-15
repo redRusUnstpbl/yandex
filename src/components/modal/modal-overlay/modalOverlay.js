@@ -1,14 +1,13 @@
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { closeModal } from '../../../services/actions/detail';
+import PropTypes from 'prop-types';
 import ModalOverlayStyle from './modalOverlay.module.css'
 
-export default function ModalOverlay({ children }) {
+export default function ModalOverlay({ children, setCloseModal }) {
   const ref = useRef(null);
-  const dispatch = useDispatch();
+
   const handleCloseModal = (e) => {
-    if (e.target == ref.current) {
-      dispatch(closeModal());
+    if (e.target === ref.current) {
+      setCloseModal()
     }
   }
 
@@ -18,3 +17,7 @@ export default function ModalOverlay({ children }) {
     </div>
   )
 }
+
+ModalOverlay.propTypes = {
+  "setCloseModal": PropTypes.func.isRequired,
+}; 
