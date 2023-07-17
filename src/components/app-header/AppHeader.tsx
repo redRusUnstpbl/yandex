@@ -1,10 +1,21 @@
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from "react-router-dom";
 import AppHeaderStyles from './AppHeader.module.css';
-import AppHeaderButton from './app-header-button/AppHeaderButton';
+import { AppHeaderButton } from './app-header-button/AppHeaderButton';
 
-export default function AppHeader() {
-    const headerButtons = {
+export type THeaderButton = {
+    readonly component: string,
+    readonly state: string,
+    readonly text: string,
+    readonly link: string
+}
+
+type IHeaderButtons = {
+    readonly [sideName: string]: THeaderButton[]
+}
+
+export default function AppHeader(): JSX.Element {
+    const headerButtons: IHeaderButtons = {
         leftSide: [
             {
                 component: 'BurgerIcon',

@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeaderButtonStyles from './appHeaderButton.module.css'
+import type { THeaderButton } from '../AppHeader';
+import type { TIconTypes } from '../../../utils/types';
 
-export default function AppHeaderButton({ button }) {
-    let component;
-    let buttonClass = AppHeaderButtonStyles.header_button;
-    let buttonType = 'primary';
+type TAppHeaderButton = {
+    button: THeaderButton
+}
+
+export const AppHeaderButton: FC<TAppHeaderButton> = ({ button }): JSX.Element => {
+    let component:React.ReactNode;
+    let buttonClass:string = AppHeaderButtonStyles.header_button;
+    let buttonType:TIconTypes = 'primary';
+
     if (button.state === 'disabled') {
         buttonClass = AppHeaderButtonStyles.header_button_disabled;
         buttonType = 'secondary';
@@ -32,11 +39,3 @@ export default function AppHeaderButton({ button }) {
         </div>
     )
 }
-
-AppHeaderButton.propTypes = {
-    "button": PropTypes.shape({
-        "component": PropTypes.string.isRequired,
-        "state": PropTypes.string.isRequired,
-        "text": PropTypes.string.isRequired,
-    }).isRequired,
-}; 

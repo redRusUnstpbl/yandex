@@ -15,18 +15,18 @@ export const SET_PASSWORD_FORGOT = 'SET_PASSWORD_FORGOT';
 export const SET_PASSWORD_RESET = 'SET_PASSWORD_RESET';
 export const SET_REFRESH_TOKEN = 'SET_REFRESH_TOKEN';
 
-export const setAuthChecked = (value) => ({
+export const setAuthChecked = (value: boolean) => ({
   type: SET_AUTH_CHECKED,
   payload: value,
 });
 
-export const setErrorClear = (key) => ({
+export const setErrorClear = (key: string) => ({
   type: SET_CLEAR_ERROR,
   key: key,
 });
 
-export function checkUserAuth() {
-  return function (dispatch) {
+export const checkUserAuth: any = () => {
+  return function (dispatch: any) {
     if (getCookie('accessToken')) {
       dispatch({
         type: SET_IS_REQUEST,
@@ -37,7 +37,7 @@ export function checkUserAuth() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          authorization: getCookie('accessToken')
+          authorization: getCookie('accessToken') as string
         },
       })
         .then(checkResponse)
@@ -66,8 +66,8 @@ export function checkUserAuth() {
   }
 }
 
-export function refreshToken() {
-  return function (dispatch) {
+export const refreshToken = () => {
+  return function (dispatch: any) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_REFRESH_TOKEN
@@ -99,8 +99,12 @@ export function refreshToken() {
   }
 }
 
-export function register(data) {
-  return function (dispatch) {
+export const register: any = (data: {
+  email: string;
+  password: string;
+  name: string;
+}) => {
+  return function (dispatch: any) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_REGISTER
@@ -133,8 +137,11 @@ export function register(data) {
   }
 }
 
-export function login(data) {
-  return function (dispatch) {
+export const login: any = (data: {
+  email: string;
+  password: string;
+}) => {
+  return function (dispatch: any) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_LOGIN
@@ -167,8 +174,8 @@ export function login(data) {
   }
 }
 
-export function logout() {
-  return function (dispatch) {
+export const logout: any = () => {
+  return function (dispatch: any) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_LOGOUT
@@ -184,9 +191,9 @@ export function logout() {
       })
     })
       .then(checkResponse)
-      .then(res => {
-        setCookie("accessToken", null);
-        setCookie("refreshToken", null);
+      .then(() => {
+        setCookie("accessToken", '');
+        setCookie("refreshToken", '');
 
         dispatch({
           type: SET_LOGOUT,
@@ -203,7 +210,11 @@ export function logout() {
 }
 
 
-export const updateUser = (data) => async (dispatch) => {
+export const updateUser: any = (data: {
+  name: string;
+  email: string;
+  password: string;
+}) => async (dispatch: any) => {
   await Promise.all([
     dispatch({
       type: SET_IS_REQUEST,
@@ -214,7 +225,7 @@ export const updateUser = (data) => async (dispatch) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        authorization: getCookie('accessToken')
+        authorization: getCookie('accessToken') as string
       },
       body: JSON.stringify(data),
     })
@@ -235,7 +246,9 @@ export const updateUser = (data) => async (dispatch) => {
   ]);
 }
 
-export const forgotPassword = (data) => async (dispatch) => {
+export const forgotPassword: any = (data: {
+  email: string;
+}) => async (dispatch: any) => {
   return await new Promise((resolve) => {
     dispatch({
       type: SET_IS_REQUEST,
@@ -269,7 +282,10 @@ export const forgotPassword = (data) => async (dispatch) => {
   })
 }
 
-export const resetPassword = (data) => async (dispatch) => {
+export const resetPassword: any = (data: {
+  password: string;
+  token: string
+}) => async (dispatch: any) => {
   return await new Promise((resolve) => {
     dispatch({
       type: SET_IS_REQUEST,

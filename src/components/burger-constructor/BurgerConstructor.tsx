@@ -14,14 +14,28 @@ import BurgerConstructorItem from './burger-constructor-item/BurgerConstructorIt
 import OrderDetails from '../order-details/OrderDetails';
 import Modal from '../modal/modal';
 
-const bun = 'bun';
+import type { TIngredient, TResponseBody } from '../../utils/types';
+import { TabTypes } from '../../utils/types';
 
-export default function BurgerConstructor() {
+type TDropIngredient = {
+  data: TIngredient;
+}
+
+type TOrderResult = {
+  'number': number
+}
+
+export default function BurgerConstructor(): JSX.Element {
   const dispatch = useDispatch();
+  // @ts-ignore
   const getDataModal = (state) => state.detail.id;
+  // @ts-ignore
   const getDataOrder = (state) => state.order.order;
+  // @ts-ignore
   const getDataMain = (state) => state.construct.items;
+  // @ts-ignore
   const getDataBun = (state) => state.construct.bun;
+  // @ts-ignore
   const getUser = (state) => state.user;
   
   const navigate = useNavigate();
@@ -33,17 +47,19 @@ export default function BurgerConstructor() {
   const dataMain = useSelector(getDataMain);
   const dataBun = useSelector(getDataBun);
   const items = dataBun ? dataMain.concat(dataBun) : dataMain;
-  const sum = useMemo(() => items.reduce((sum, cur) => cur.type === bun ? sum + (cur.price * 2) : sum + cur.price, 0), [items]);
+  const sum = useMemo<number>(() => items.reduce(
+    (sum:number, cur:TIngredient) => cur.type === TabTypes.bun ? sum + (cur.price * 2) : sum + cur.price, 0
+  ), [items]);
 
   const makeOrder = () => {
     if (!user.user) {
       navigate('/login', { replace: true })
     } else {
-      const ids = items.map(cur => cur._id);
+      const ids = items.map((cur:TIngredient) => cur._id);
 
       dispatch(getOrder(API + '/orders', {
         "ingredients": ids
-      })).then(function(result){
+      })).then(function(result:TResponseBody<'order', TOrderResult>){
         if (result.success) {
           dispatch(showModal('order_details'));
         }
@@ -57,12 +73,12 @@ export default function BurgerConstructor() {
 
   const [{ isHover, canDrop }, dropTarget] = useDrop({
     accept: 'ingredient',
-    collect: monitor => ({
+    collect: (monitor: any) => ({
       isHover: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
-    drop(item) {
-      if (item.data.type === bun && dataBun) {
+    drop(item: TDropIngredient) {
+      if (item.data.type === TabTypes.bun && dataBun) {
         dispatch(decrIngredient(dataBun));
       }
 
@@ -71,7 +87,7 @@ export default function BurgerConstructor() {
     },
   });
 
-  const deleteItemHander = (index) => {
+  const deleteItemHander = (index:number) => {
     if (index >= 0) {
       dispatch(decrIngredient(dataMain[index]));
     } else {
@@ -81,18 +97,18 @@ export default function BurgerConstructor() {
     dispatch(removeElementFromConstructor(index))
   }
 
-  const BurgerConstructorItemsClass = [
+  const BurgerConstructorItemsClass: string = [
     BurgerConstructorStyle.burger_constructor_items,
     canDrop ? BurgerConstructorStyle.drop_target : '',
     isHover ? BurgerConstructorStyle.drop_on_target : '',
   ].join(" ");
 
-  const BurgerConstructorBottomClass = [
+  const BurgerConstructorBottomClass: string = [
     BurgerConstructorStyle.burger_constructor_price,
     items.length === 0 ? BurgerConstructorStyle.burger_constructor_price_disabled : '',
   ].join(" ");
 
-  const noItemsText = canDrop ? "Перетащите ингредиент сюда" : "Необходимо добавить ингредиенты";
+  const noItemsText: string = canDrop ? "Перетащите ингредиент сюда" : "Необходимо добавить ингредиенты";
 
   return (
     <>
@@ -116,7 +132,7 @@ export default function BurgerConstructor() {
 
               {dataMain.length > 0 &&
                 <ul className={BurgerConstructorStyle.burger_constructor_list}>
-                  {dataMain.map(function (item, i) {
+                  {dataMain.map(function (item: TIngredient, i:number) {
                     return (
                       <li key={item.key}>
                         <BurgerConstructorItem

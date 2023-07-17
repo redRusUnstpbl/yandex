@@ -1,12 +1,21 @@
-import { useMemo, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo, FC } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
-import { API } from '../../utils/api';
-import { getIngredients } from '../../services/actions/ingredients';
 import IngredientsDetailsStyle from './IngredientDetails.module.css';
+import type { TIngredient } from '../../utils/types';
 
-const cardInfo = {
+type TCardInfo = {
+  [type: string]: {
+    readonly 'name': string,
+    'value'?: string | number
+  }
+};
+
+type TIngredientsDetails = {
+  'isPage': boolean
+}
+
+const cardInfo: TCardInfo = {
   'calories': {
     'name': 'Калории,ккал'
   },
@@ -21,19 +30,13 @@ const cardInfo = {
   }
 };
 
-function prepareInfo(data) {
-  data = typeof data !== 'undefined' ? data : false;
-
-  if (!data || !Object.keys(data)) {
-    return {};
-  }
-
+function prepareInfo(data: TIngredient) {
   let info = cardInfo;
   Object.keys(data).forEach(function (item) {
     if (Object.keys(cardInfo).includes(item)) {
       info[item] = {
         ...info[item],
-        'value': data[item]
+        'value': data[item as keyof typeof data]
       }
     }
   });
@@ -41,11 +44,12 @@ function prepareInfo(data) {
   return info;
 }
 
-export default function IngredientsDetails({ isPage }) {
+const IngredientsDetails: FC<TIngredientsDetails> = ({ isPage }) => {
+  // @ts-ignore
   const getDataIngredients = (state) => state.ingredients.items;
+  // @ts-ignore
   const getDataModal = (state) => state.detail.id;
 
-  const dispatch = useDispatch();
   const { ingredientId } = useParams();
   const ingredients = useSelector(getDataIngredients);
   let id = useSelector(getDataModal);
@@ -54,7 +58,7 @@ export default function IngredientsDetails({ isPage }) {
     id = ingredientId;
   }
 
-  const data = useMemo(() => ingredients.filter(x => x._id === id), [ingredients, id]);
+  const data = useMemo(() => ingredients.filter((x: TIngredient) => x._id === id), [ingredients, id]);
   const info = useMemo(() => prepareInfo(data[0]), [data]);
 
   let result =
@@ -95,6 +99,4 @@ export default function IngredientsDetails({ isPage }) {
   return result;
 }
 
-IngredientsDetails.propTypes = {
-  "isPage": PropTypes.bool.isRequired,
-}; 
+export default IngredientsDetails;

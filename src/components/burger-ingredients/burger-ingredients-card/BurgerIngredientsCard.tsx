@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -5,9 +6,14 @@ import { useDispatch } from 'react-redux';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientsStyle from './BurgerIngredientsCard.module.css';
 import { showModal } from '../../../services/actions/detail';
-import { BurgerIngredientsCardProps } from '../../../utils/types';
+import type { TIngredient } from '../../../utils/types';
 
-export default function BurgerIngredientsCard({ data, count }) {
+type TBurgerIngredientsCard = {
+  data: TIngredient
+  count: number
+};
+
+export const BurgerIngredientsCard: FC<TBurgerIngredientsCard> = ({ data, count }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,4 +65,4 @@ export default function BurgerIngredientsCard({ data, count }) {
   )
 }
 
-BurgerIngredientsCard.propTypes = BurgerIngredientsCardProps; 
+export default BurgerIngredientsCard;

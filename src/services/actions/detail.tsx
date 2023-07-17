@@ -1,7 +1,7 @@
 export const SET_MODAL = "SET_MODAL";
 export const CLEAR_MODAL = "CLEAR_MODAL";
 
-export const showModal = (id) => ({
+export const showModal = (id: number | string) => ({
   type: SET_MODAL,
   id: id
 });

@@ -5,6 +5,7 @@ import BurgerIngredient from '../../components/burger-ingredients/BurgerIngredie
 import BurgerConstructor from '../../components/burger-constructor/BurgerConstructor';
 
 function PageHome() {
+  // @ts-ignore
   const getData = (state) => state.ingredients;
   const { items, itemsRequest, itemsFailed } = useSelector(getData);
 

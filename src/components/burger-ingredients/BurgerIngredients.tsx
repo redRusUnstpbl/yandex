@@ -3,45 +3,52 @@ import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientStyle from './BurgerIngredients.module.css'
 import BurgerIngredientsList from './burger-ingredients-list/burgerIngredientsList';
+import type { TIngredient, TTabData, THandleTabInfo } from '../../utils/types';
+import { TabTypes } from '../../utils/types';
 
-const bun = "bun";
-const sauce = "sauce";
-const main = "main";
-const scrollOpt = {
-  behavior: "smooth",
+type TTabDataExt = TTabData & {
+  'ref': React.RefObject<HTMLDivElement>,
+  'onClick': (info: string) => void,
+  'active': boolean,
 };
 
 export default function BurgerIngredient() {
-  const containerRef = useRef(null);
-  const bunRef = createRef(null);
-  const sauceRef = createRef(null);
-  const mainRef = createRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const bunRef = createRef<HTMLDivElement>();
+  const sauceRef = createRef<HTMLDivElement>();
+  const mainRef = createRef<HTMLDivElement>();
 
-  const [tab, setTab] = useState(bun);
-  const [scrollTop, setScrollTop] = useState(0);
+  const [tab, setTab] = useState<string>(TabTypes.bun);
+  const [scrollTop, setScrollTop] = useState<number>(0);
 
-  const handleScroll = (event) => {
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
     setScrollTop(event.currentTarget.scrollTop);
   };
 
-  const handleSetTab = (info) => {
+  const handleSetTab = (info: THandleTabInfo) => {
     if (info.top <= 10) {
       setTab(info.type);
     }
   }
 
-  const handleClickTab = (info) => {
+  const handleClickTab = (info: string) => {
     switch (info) {
-      case bun: {
-        bunRef.current.scrollIntoView(scrollOpt);
+      case TabTypes.bun: {
+        (bunRef.current as HTMLDivElement).scrollIntoView({
+          behavior: "smooth",
+        });
         break;
       }
-      case sauce: {
-        sauceRef.current.scrollIntoView(scrollOpt);
+      case TabTypes.sauce: {
+        (sauceRef.current as HTMLDivElement).scrollIntoView({
+          behavior: "smooth",
+        });
         break;
       }
-      case main: {
-        mainRef.current.scrollIntoView(scrollOpt);
+      case TabTypes.main: {
+        (mainRef.current as HTMLDivElement).scrollIntoView({
+          behavior: "smooth",
+        });
         break;
       }
 
@@ -50,54 +57,50 @@ export default function BurgerIngredient() {
     }
   }
 
+  // @ts-ignore
   const getDataIngredients = (state) => state.ingredients.items;
+
   const items = useSelector(getDataIngredients);
-  const tabData = [
+  const tabData:TTabDataExt[] = [
     {
-      type: bun,
+      type: TabTypes.bun,
       title: "Булки",
-      data: useMemo(() => items.filter(x => x.type === bun), [items]),
+      data: items.filter((x: TIngredient) => x.type === TabTypes.bun),
       onClick: handleClickTab,
       scrollTop: scrollTop,
-      handleTab: handleSetTab,
-      active: tab === bun,
+      handleSetTab: handleSetTab,
+      active: tab === TabTypes.bun,
       ref: bunRef,
       containerRef: containerRef
     },
     {
-      type: sauce,
+      type: TabTypes.sauce,
       title: "Соусы",
-      data: useMemo(() => items.filter(x => x.type === sauce), [items]),
+      data: items.filter((x: TIngredient) => x.type === TabTypes.sauce),
       onClick: handleClickTab,
       scrollTop: scrollTop,
-      handleTab: handleSetTab,
-      active: tab === sauce,
+      handleSetTab: handleSetTab,
+      active: tab === TabTypes.sauce,
       ref: sauceRef,
       containerRef: containerRef
     },
     {
-      type: main,
+      type: TabTypes.main,
       title: "Начинки",
-      data: useMemo(() => items.filter(x => x.type === main), [items]),
+      data: items.filter((x: TIngredient) => x.type === TabTypes.main),
       onClick: handleClickTab,
       scrollTop: scrollTop,
-      handleTab: handleSetTab,
-      active: tab === main,
+      handleSetTab: handleSetTab,
+      active: tab === TabTypes.main,
       ref: mainRef,
       containerRef: containerRef
     }
   ];
 
-  const burgerList = useMemo(() => tabData.map(function (item) {
+  const burgerList = useMemo(() => tabData.map((item:TTabDataExt) => {
     return <BurgerIngredientsList
-      data={item.data}
-      title={item.title}
-      type={item.type}
       key={item.type}
-      scrollTop={item.scrollTop}
-      handleSetTab={handleSetTab}
-      ref={item.ref}
-      containerRef={item.containerRef}
+      {...item}
     />
   }), [tabData]);
 
