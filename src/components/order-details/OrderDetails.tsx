@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 import OrderDetailsStyle from "./OrderDetails.module.css";
 import OrderDetailsImgDone from "./images/done.png";
 
-export default function OrderDetails({ orderId }) {
+type TOrderDetails = {
+  orderId?: string | number;
+}
+const OrderDetails: FC<TOrderDetails> = ({ orderId }) => {
   return (
     <div className={OrderDetailsStyle.card}>
       <p className={OrderDetailsStyle.card_id}>{orderId}</p>
@@ -14,6 +17,4 @@ export default function OrderDetails({ orderId }) {
   )
 }
 
-OrderDetails.propTypes = {
-  "orderId": PropTypes.number.isRequired,
-}; 
+export default OrderDetails;

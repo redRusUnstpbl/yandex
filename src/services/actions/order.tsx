@@ -5,7 +5,7 @@ export const GET_ORDER_REQUEST = "GET_ORDER_REQUEST";
 export const GET_ORDER_SUCCESS = "GET_ORDER_SUCCESS";
 export const GET_ORDER_FAILED = "GET_ORDER_FAILED";
 
-export const getOrder = (url, data) => async (dispatch) => {
+export const getOrder: any = (url: string, data: {'ingredients': number[]}) => async (dispatch:any) => {
   return await new Promise((resolve) => {
     dispatch({
       type: GET_ORDER_REQUEST

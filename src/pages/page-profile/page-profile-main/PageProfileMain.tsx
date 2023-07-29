@@ -6,6 +6,7 @@ import { updateUser, SET_USER_UPDATE } from '../../../services/actions/user';
 
 function PageProfileMain() {
   const dispatch = useDispatch();
+  // @ts-ignore
   const getUser = (state) => state.user;
   const user = useSelector(getUser);
   const [form, setForm] = useState({
@@ -14,14 +15,14 @@ function PageProfileMain() {
     password: ''
   });
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  const nameInputRef = useRef(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const [disabledName, setDisabledName] = useState(true);
-  const onNameIconClick = (e) => {
-    setTimeout(() => nameInputRef.current.focus(), 0)
+  const onNameIconClick = (e: React.MouseEvent<HTMLElement>) => {
+    setTimeout(() => nameInputRef.current?.focus(), 0)
     setDisabledName(false);
   }
 
@@ -29,7 +30,7 @@ function PageProfileMain() {
     setDisabledName(true);
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     dispatch(updateUser(form))

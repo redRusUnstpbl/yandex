@@ -1,25 +1,31 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalStyle from './modal.module.css';
 import ModalOverlay from './modal-overlay/modalOverlay';
 
-function createWrapperAndAppendToBody(wrapperId) {
+type TModal = {
+  title?: string;
+  setCloseModal: () => void;
+  wrapperId?: string;
+  children?: string | JSX.Element;
+}
+
+function createWrapperAndAppendToBody(wrapperId: string) {
   const wrapperElement = document.createElement('div');
   wrapperElement.setAttribute("id", wrapperId);
   document.body.appendChild(wrapperElement);
   return wrapperElement;
 }
 
-export default function Modal({ children, title, setCloseModal, wrapperId = "react-modals" }) {  
+const Modal: FC<TModal> = ({ children, title, setCloseModal, wrapperId = "react-modals" }) => {  
   useEffect(() => {
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: React.KeyboardEvent<HTMLBodyElement>) => {
       if (e.key === "Escape") setCloseModal();
     }
 
-    document.body.addEventListener("keydown", onKeyDown);
-    return () => { document.body.removeEventListener("keydown", onKeyDown) };
+    document.body.addEventListener("keydown", onKeyDown as any);
+    return () => { document.body.removeEventListener("keydown", onKeyDown as any) };
   }, [setCloseModal]);
 
   const handleCloseModal = () => {
@@ -49,8 +55,4 @@ export default function Modal({ children, title, setCloseModal, wrapperId = "rea
   );
 }
 
-Modal.propTypes = {
-  "title": PropTypes.string,
-  "setCloseModal": PropTypes.func.isRequired,
-  "wrapperId": PropTypes.string,
-}; 
+export default Modal;

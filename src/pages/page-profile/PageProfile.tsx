@@ -23,7 +23,7 @@ function PageProfile() {
         }
     }, [location]);
 
-    const onLogout = (e) => {
+    const onLogout = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         dispatch(logout());
     }

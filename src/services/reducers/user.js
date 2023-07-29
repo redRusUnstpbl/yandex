@@ -38,6 +38,9 @@ export const userReducer = (state = initialState, action) => {
           isFailed: filterKey(state.isFailed, action.request)
         }
       }
+      return {
+        ...state
+      }
     case SET_IS_FAILED:
       if (!state.isFailed[action.request]) {
         return {
@@ -48,6 +51,9 @@ export const userReducer = (state = initialState, action) => {
             [action.request]: action.error ?? ''
           }
         }
+      }
+      return {
+        ...state
       }
     case SET_CLEAR_ERROR:
       if (state.isFailed[action.key]) {
