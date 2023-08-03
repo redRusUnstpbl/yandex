@@ -3,11 +3,17 @@ import {
   CLEAR_MODAL
 } from '../actions/detail';
 
-const initialState = {
+import type { TDetailActions } from '../actions/detail';
+
+type TDetailState = {
+  readonly id: number | string | null;
+}
+
+const initialState: TDetailState = {
   id: null,
 };
 
-export const detailReducer = (state = initialState, action) => {
+export const detailReducer = (state = initialState, action: TDetailActions): TDetailState => {
   switch (action.type) {
     case SET_MODAL: {
       return {

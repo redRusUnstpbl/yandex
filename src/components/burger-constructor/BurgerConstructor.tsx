@@ -13,7 +13,7 @@ import BurgerConstructorStyle from './BurgerConstructor.module.css'
 import BurgerConstructorItem from './burger-constructor-item/BurgerConstructorItem';
 import OrderDetails from '../order-details/OrderDetails';
 import Modal from '../modal/modal';
-
+import { RootState } from '../../services/reducers';
 import type { TIngredient, TResponseBody } from '../../utils/types';
 import { TabTypes } from '../../utils/types';
 
@@ -27,23 +27,18 @@ type TOrderResult = {
 
 export default function BurgerConstructor(): JSX.Element {
   const dispatch = useDispatch();
-  // @ts-ignore
-  const getDataModal = (state) => state.detail.id;
-  // @ts-ignore
-  const getDataOrder = (state) => state.order.order;
-  // @ts-ignore
-  const getDataMain = (state) => state.construct.items;
-  // @ts-ignore
-  const getDataBun = (state) => state.construct.bun;
-  // @ts-ignore
-  const getUser = (state) => state.user;
+  const getDataModal = (state: RootState) => state.detail;
+  const getDataOrder = (state: RootState) => state.order;
+  const getDataMain = (state: RootState) => state.construct.items;
+  const getDataBun = (state: RootState) => state.construct.bun;
+  const getUser = (state: RootState) => state.user;
   
   const navigate = useNavigate();
   const user = useSelector(getUser);
-  const modal = useSelector(getDataModal);
-  const modalVisible = modal && modal === 'order_details';
+  const { id } = useSelector(getDataModal);
+  const modalVisible = id && id === 'order_details';
 
-  const order = useSelector(getDataOrder)
+  const { order, orderRequest } = useSelector(getDataOrder)
   const dataMain = useSelector(getDataMain);
   const dataBun = useSelector(getDataBun);
   const items = dataBun ? dataMain.concat(dataBun) : dataMain;
@@ -57,7 +52,7 @@ export default function BurgerConstructor(): JSX.Element {
     } else {
       const ids = items.map((cur:TIngredient) => cur._id);
 
-      dispatch(getOrder(API + '/orders', {
+      dispatch<any>(getOrder(API + '/orders', {
         "ingredients": ids
       })).then(function(result:TResponseBody<'order', TOrderResult>){
         if (result.success) {
@@ -71,9 +66,9 @@ export default function BurgerConstructor(): JSX.Element {
     dispatch(closeModal());
   }
 
-  const [{ isHover, canDrop }, dropTarget] = useDrop({
+  const [{ isHover, canDrop }, dropTarget] = useDrop<TDropIngredient, unknown, { canDrop: boolean, isHover: boolean }> ({
     accept: 'ingredient',
-    collect: (monitor: any) => ({
+    collect: (monitor) => ({
       isHover: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
@@ -91,7 +86,7 @@ export default function BurgerConstructor(): JSX.Element {
     if (index >= 0) {
       dispatch(decrIngredient(dataMain[index]));
     } else {
-      dispatch(decrIngredient(dataBun));
+      dispatch(decrIngredient(dataBun as TIngredient));
     }
 
     dispatch(removeElementFromConstructor(index))
@@ -113,86 +108,95 @@ export default function BurgerConstructor(): JSX.Element {
   return (
     <>
       <section className={BurgerConstructorStyle.burger_constructor}>
-        <div className={BurgerConstructorItemsClass} ref={dropTarget}>
-          {items.length > 0 ?
-            <>
-              {dataBun &&
-                <div className={BurgerConstructorStyle.burger_constructor_bun_top}>
-                  <BurgerConstructorItem
-                    type="top"
-                    index={-1}
-                    isLocked={false}
-                    text={`${dataBun.name} (верх)`}
-                    price={dataBun.price}
-                    thumbnail={dataBun.image}
-                    onDeleteItem={deleteItemHander}
-                  />
-                </div>
-              }
+        {orderRequest && 
+        <>
+          <p className="text text_type_main-default">Заявка на заказ отправлена, ожидайте подтверждения</p>
+        </>
+        }
+        {!orderRequest &&
+        <>
+          <div className={BurgerConstructorItemsClass} ref={dropTarget}>
+            {items.length > 0 ?
+              <>
+                {dataBun &&
+                  <div className={BurgerConstructorStyle.burger_constructor_bun_top}>
+                    <BurgerConstructorItem
+                      type="top"
+                      index={-1}
+                      isLocked={false}
+                      text={`${dataBun.name} (верх)`}
+                      price={dataBun.price}
+                      thumbnail={dataBun.image}
+                      onDeleteItem={deleteItemHander}
+                    />
+                  </div>
+                }
 
-              {dataMain.length > 0 &&
-                <ul className={BurgerConstructorStyle.burger_constructor_list}>
-                  {dataMain.map(function (item: TIngredient, i:number) {
-                    return (
-                      <li key={item.key}>
-                        <BurgerConstructorItem
-                          isLocked={false}
-                          index={i}
-                          text={item.name}
-                          price={item.price}
-                          thumbnail={item.image}
-                          isDrag={true}
-                          onDeleteItem={deleteItemHander}
-                        />
-                      </li>
-                    )
-                  })}
-                </ul>
-              }
+                {dataMain.length > 0 &&
+                  <ul className={BurgerConstructorStyle.burger_constructor_list}>
+                    {dataMain.map(function (item: TIngredient, i:number) {
+                      return (
+                        <li key={item.key}>
+                          <BurgerConstructorItem
+                            isLocked={false}
+                            index={i}
+                            text={item.name}
+                            price={item.price}
+                            thumbnail={item.image}
+                            isDrag={true}
+                            onDeleteItem={deleteItemHander}
+                          />
+                        </li>
+                      )
+                    })}
+                  </ul>
+                }
 
-              {dataBun &&
-                <div className={BurgerConstructorStyle.burger_constructor_bun_bottom}>
-                  <BurgerConstructorItem
-                    type="bottom"
-                    index={-1}
-                    isLocked={false}
-                    text={`${dataBun.name} (низ)`}
-                    price={dataBun.price}
-                    thumbnail={dataBun.image}
-                    onDeleteItem={deleteItemHander}
-                  />
-                </div>
-              }
-            </>
-            :
-            <p className={BurgerConstructorStyle.burger_constructor_text_info}>
-              {noItemsText}
+                {dataBun &&
+                  <div className={BurgerConstructorStyle.burger_constructor_bun_bottom}>
+                    <BurgerConstructorItem
+                      type="bottom"
+                      index={-1}
+                      isLocked={false}
+                      text={`${dataBun.name} (низ)`}
+                      price={dataBun.price}
+                      thumbnail={dataBun.image}
+                      onDeleteItem={deleteItemHander}
+                    />
+                  </div>
+                }
+              </>
+              :
+              <p className={BurgerConstructorStyle.burger_constructor_text_info}>
+                {noItemsText}
+              </p>
+            }
+          </div>
+
+          <div className={BurgerConstructorBottomClass}>
+            <p className={BurgerConstructorStyle.burger_constructor_price_value}>
+              <span>{sum}</span>
+              <CurrencyIcon type="primary" />
             </p>
-          }
-        </div>
-
-        <div className={BurgerConstructorBottomClass}>
-          <p className={BurgerConstructorStyle.burger_constructor_price_value}>
-            <span>{sum}</span>
-            <CurrencyIcon type="primary" />
-          </p>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="large"
-            disabled={items.length > 0 ? false : true}
-            onClick={makeOrder}
-          >
-            Оформить заказ
-          </Button>
-        </div>
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              disabled={items.length > 0 ? false : true}
+              onClick={makeOrder}
+            >
+              Оформить заказ
+            </Button>
+          </div>
+        </>
+        }
       </section>
 
-      {modalVisible && (
+      {order && order.number && modalVisible && 
         <Modal setCloseModal={setCloseModal}>
-          <OrderDetails orderId={order.order.number} />
+          <OrderDetails orderId={order.number} />
         </Modal>
-      )}
+      }
     </>
   );
 }

@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useDrag } from 'react-dnd';
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientsStyle from './BurgerIngredientsCard.module.css';
@@ -19,7 +18,7 @@ export const BurgerIngredientsCard: FC<TBurgerIngredientsCard> = ({ data, count 
   const dispatch = useDispatch();
 
   const showModalHandler = () => { 
-    dispatch(showModal(data._id));
+    dispatch(showModal(0));
     navigate(`/ingredients/${data._id}`, {
       state: { background: location }
     })

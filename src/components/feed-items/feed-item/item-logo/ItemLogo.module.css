@@ -1,0 +1,76 @@
+.logo {
+    border-radius: 100px;
+    background: var(--interface-bg, #131316);
+    width: 64px;
+    height: 64px;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    line-height: 0;
+    overflow: hidden;
+}
+
+.logo img{
+    width: 112px;
+    height: 56px;
+    object-fit: contain;
+    object-position: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.logo  * {
+    pointer-events: none;
+}
+
+.logo:before{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%),
+    linear-gradient(0deg, #131316, #131316);
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.logo:after{
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    bottom: 2px;
+    right: 2px;
+    background: var(--interface-bg, #131316);
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.logo_more{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    composes: text text_type_main-default from global;
+    z-index: 1;
+}
+
+.logo_more:before{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: var(--background);
+    opacity: .6;
+    z-index: -1;
+}

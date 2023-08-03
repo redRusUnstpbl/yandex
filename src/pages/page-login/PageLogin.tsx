@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import FormsMain from "../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../components/forms/forms-main/FormsMain.module.css';
 import { PasswordInput, EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { RootState } from '../../services/reducers';
 
 function PageLogin() {
-  // @ts-ignore
-  const getUser = (state) => state.user;
+  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ email: '', password: '' });
   const user = useSelector(getUser);
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ function PageLogin() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.email && form.password) {
-      dispatch(login(form));
+      dispatch<any>(login(form));
     }
   }
 

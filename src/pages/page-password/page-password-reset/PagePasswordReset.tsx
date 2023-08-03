@@ -8,10 +8,10 @@ import FormsMain from "../../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../../components/forms/forms-main/FormsMain.module.css';
 import { PasswordInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { TResponseBody } from '../../../utils/types';
+import { RootState } from '../../../services/reducers';
 
 function PagePasswordReset() {
-  // @ts-ignore
-  const getUser = (state) => state.user;
+  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ password: '', token: '' });
   const [result, setResult] = useState('');
   const user = useSelector(getUser);
@@ -25,7 +25,7 @@ function PagePasswordReset() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.password && form.token) {
-      dispatch(resetPassword(form)).then((result: TResponseBody) => {
+      dispatch<any>(resetPassword(form)).then((result: TResponseBody) => {
         if (result.success) {
           setResult('Восстановление пароля завершено, через 5 секунд вы будете перенаправлены на страницу авторизации');
           setTimeout(() => {

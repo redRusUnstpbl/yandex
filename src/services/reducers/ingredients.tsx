@@ -8,19 +8,28 @@ import {
   REMOVE_ALL_INGREDIENT
 } from '../actions/ingredients';
 
-const initialState = {
+import type { TIngredient } from "../../utils/types";
+import type { TIngredientsActions } from '../actions/ingredients';
+
+type TIngredietsState = {
+  items: ReadonlyArray<TIngredient>;
+  itemsRequest: boolean;
+  itemsFailed: boolean;
+}
+
+const initialState: TIngredietsState = {
   items: [],
   itemsRequest: false,
   itemsFailed: false, 
 };
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialState, action: TIngredientsActions): TIngredietsState => {
   switch (action.type) {
     case INCR_INGREDIENT: {
       return {
         ...state,
-        items: state.items.map(function(item) {
-          let cnt = item.cnt;
+        items: state.items.map(function(item: TIngredient) {
+          let cnt = item.cnt ?? 0;
           if (item._id === action.item._id) {
             cnt += action.item.type === 'bun' ? 2 : 1;
           }
@@ -35,8 +44,8 @@ export const ingredientsReducer = (state = initialState, action) => {
     case DECR_INGREDIENT: {
       return {
         ...state,
-        items: state.items.map(function(item) {
-          let cnt = item.cnt;
+        items: state.items.map(function(item: TIngredient) {
+          let cnt = item.cnt ?? 0;
           if (item._id === action.item._id) {
             cnt -= action.item.type === 'bun' ? 2 : 1;
           }
@@ -51,7 +60,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     case REMOVE_INGREDIENT: {
       return {
         ...state,
-        items: state.items.map(function(item) {
+        items: state.items.map(function(item: TIngredient) {
           return {
             ...item,
             cnt: 0
@@ -62,7 +71,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     case REMOVE_ALL_INGREDIENT: {
       return {
         ...state,
-        items: state.items.map(function(item) {
+        items: state.items.map(function(item: TIngredient) {
           return {
             ...item,
             cnt: 0
@@ -80,7 +89,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     case GET_INGREDIENTS_SUCCESS: {
       return {
         ...state,
-        items: action.items.map(item => {
+        items: action.items.map((item: TIngredient) => {
           return {
             ...item, 
             cnt: 0

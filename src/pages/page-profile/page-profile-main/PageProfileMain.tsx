@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import PageProfileMainStyles from './PageProfileMain.module.css';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUser, SET_USER_UPDATE } from '../../../services/actions/user';
+import { RootState } from '../../../services/reducers';
 
 function PageProfileMain() {
   const dispatch = useDispatch();
-  // @ts-ignore
-  const getUser = (state) => state.user;
-  const user = useSelector(getUser);
+  const getUser = (state: RootState) => state.user;
+  const { user, isRequest, isFailed } = useSelector(getUser);
   const [form, setForm] = useState({
-    name: user.user.name,
-    email: user.user.email,
+    name: user?.name ?? '',
+    email: user?.email ?? '',
     password: ''
   });
 
@@ -33,7 +33,7 @@ function PageProfileMain() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(updateUser(form))
+    dispatch<any>(updateUser(form))
     .then(function(){
       setForm({
         ...form,
@@ -44,13 +44,13 @@ function PageProfileMain() {
 
   return (
     <form onSubmit={onSubmit} className={PageProfileMainStyles.form}>
-      {user.isRequest[SET_USER_UPDATE] &&
-        <p className={PageProfileMainStyles.form_info}>{user.isRequest[SET_USER_UPDATE]}</p>
+      {isRequest[SET_USER_UPDATE] &&
+        <p className={PageProfileMainStyles.form_info}>{isRequest[SET_USER_UPDATE]}</p>
       }
-      {user.isFailed[SET_USER_UPDATE] &&
-        <p className={PageProfileMainStyles.form_error}>{user.isFailed[SET_USER_UPDATE]}</p>
+      {isFailed[SET_USER_UPDATE] &&
+        <p className={PageProfileMainStyles.form_error}>{isFailed[SET_USER_UPDATE]}</p>
       }
-      {!user.isRequest[SET_USER_UPDATE] &&
+      {!isRequest[SET_USER_UPDATE] &&
         <>
           <div className={PageProfileMainStyles.form_item}>
             <Input

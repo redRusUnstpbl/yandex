@@ -5,6 +5,7 @@ import BurgerIngredientStyle from './BurgerIngredients.module.css'
 import BurgerIngredientsList from './burger-ingredients-list/burgerIngredientsList';
 import type { TIngredient, TTabData, THandleTabInfo } from '../../utils/types';
 import { TabTypes } from '../../utils/types';
+import { RootState } from '../../services/reducers';
 
 type TTabDataExt = TTabData & {
   'ref': React.RefObject<HTMLDivElement>,
@@ -57,8 +58,8 @@ export default function BurgerIngredient() {
     }
   }
 
-  // @ts-ignore
-  const getDataIngredients = (state) => state.ingredients.items;
+
+  const getDataIngredients = (state: RootState) => state.ingredients.items;
 
   const items = useSelector(getDataIngredients);
   const tabData:TTabDataExt[] = [

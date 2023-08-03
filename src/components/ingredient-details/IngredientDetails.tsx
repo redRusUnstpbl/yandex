@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 import IngredientsDetailsStyle from './IngredientDetails.module.css';
 import type { TIngredient } from '../../utils/types';
+import { RootState } from '../../services/reducers';
 
 type TCardInfo = {
   [type: string]: {
@@ -32,31 +33,37 @@ const cardInfo: TCardInfo = {
 
 function prepareInfo(data: TIngredient) {
   let info = cardInfo;
-  Object.keys(data).forEach(function (item) {
-    if (Object.keys(cardInfo).includes(item)) {
-      info[item] = {
-        ...info[item],
-        'value': data[item as keyof typeof data]
+  if (data) {
+    Object.keys(data).forEach(function (item) {
+      if (Object.keys(cardInfo).includes(item)) {
+        info[item] = {
+          ...info[item],
+          'value': data[item as keyof typeof data]
+        }
       }
-    }
-  });
+    });
+  }
 
   return info;
 }
 
 const IngredientsDetails: FC<TIngredientsDetails> = ({ isPage }) => {
-  // @ts-ignore
-  const getDataIngredients = (state) => state.ingredients.items;
-  // @ts-ignore
-  const getDataModal = (state) => state.detail.id;
+  const getDataIngredients = (state: RootState) => state.ingredients.items;
 
   const { ingredientId } = useParams();
+  // console.log(ingredientId);
+  
   const ingredients = useSelector(getDataIngredients);
-  let id = useSelector(getDataModal);
+  const id = useSelector((state: RootState) => {
+    if (state.detail.id) {
+      return state.detail.id;
+    } else if (ingredientId) {
+      return ingredientId;
+    }
+  });
 
-  if (ingredientId) {
-    id = ingredientId;
-  }
+  console.log(id);
+  
 
   const data = useMemo(() => ingredients.filter((x: TIngredient) => x._id === id), [ingredients, id]);
   const info = useMemo(() => prepareInfo(data[0]), [data]);

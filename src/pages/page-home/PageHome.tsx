@@ -3,10 +3,10 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BurgerIngredient from '../../components/burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../../components/burger-constructor/BurgerConstructor';
+import { RootState } from '../../services/reducers';
 
 function PageHome() {
-  // @ts-ignore
-  const getData = (state) => state.ingredients;
+  const getData = (state: RootState) => state.ingredients;
   const { items, itemsRequest, itemsFailed } = useSelector(getData);
 
   return (

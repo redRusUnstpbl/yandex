@@ -8,10 +8,10 @@ import FormsMain from "../../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../../components/forms/forms-main/FormsMain.module.css';
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { TResponseBody } from '../../../utils/types';
+import { RootState } from '../../../services/reducers';
 
 function PagePasswordForgot() {
-  // @ts-ignore
-  const getUser = (state) => state.user;
+  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ email: '' });
   const user = useSelector(getUser);
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function PagePasswordForgot() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.email) {
-      dispatch(forgotPassword(form)).then((result: TResponseBody) => {
+      dispatch<any>(forgotPassword(form)).then((result: TResponseBody) => {
         if (result.success) {
           navigate('/reset-password', { replace: true })
         }

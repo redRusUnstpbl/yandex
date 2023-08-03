@@ -25,9 +25,9 @@ export default function AppHeader(): JSX.Element {
             },
             {
                 component: 'ListIcon',
-                state: 'disabled',
+                state: 'enable',
                 text: 'Лента заказов',
-                link: '#'
+                link: '/feed'
             },
         ],
         rightSide: [

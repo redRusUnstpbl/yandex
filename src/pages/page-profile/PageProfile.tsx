@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PageProfileStyles from './PageProfile.module.css';
 import PageProfileMain from './page-profile-main/PageProfileMain';
+import PageProfileHistory from './page-profile-history/PageProfileHistory';
 import { Link } from "react-router-dom";
 import { logout } from '../../services/actions/user';
 
@@ -25,7 +26,7 @@ function PageProfile() {
 
     const onLogout = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        dispatch(logout());
+        dispatch<any>(logout());
     }
 
     return (
@@ -49,6 +50,7 @@ function PageProfile() {
 
             <div className={PageProfileStyles.profile_content}>
                 {active === PROFILE && <PageProfileMain />}
+                {active === HISTORY && <PageProfileHistory />}
             </div>
         </div>
     )

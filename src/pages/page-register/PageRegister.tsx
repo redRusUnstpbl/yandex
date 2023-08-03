@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import FormsMain from "../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../components/forms/forms-main/FormsMain.module.css';
 import { PasswordInput, EmailInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { RootState } from '../../services/reducers';
 
 function PageRegister() {
-  // @ts-ignore
-  const getUser = (state) => state.user;
+  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ email: '', password: '', name: '' });
   const user = useSelector(getUser);
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ function PageRegister() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.email && form.password && form.name) {
-      dispatch(register(form));
+      dispatch<any>(register(form));
     }
   }
 

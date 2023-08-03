@@ -1,0 +1,26 @@
+.list_item {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+}
+
+.list_item_logo{
+    flex: 0 0 64px;
+    line-height: 0;
+}
+
+.list_item_title {
+    flex: 1 1 auto;
+    composes: text text_type_main-default from global;
+}
+
+.list_item_price{
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+}
+
+.list_item_price_value{
+    composes: text text_type_main-medium from global;
+}
