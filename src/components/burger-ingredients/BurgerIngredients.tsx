@@ -5,7 +5,7 @@ import BurgerIngredientStyle from './BurgerIngredients.module.css'
 import BurgerIngredientsList from './burger-ingredients-list/burgerIngredientsList';
 import type { TIngredient, TTabData, THandleTabInfo } from '../../utils/types';
 import { TabTypes } from '../../utils/types';
-import { RootState } from '../../services/reducers';
+import { getIngredients } from '../../services/selectors';
 
 type TTabDataExt = TTabData & {
   'ref': React.RefObject<HTMLDivElement>,
@@ -32,71 +32,70 @@ export default function BurgerIngredient() {
     }
   }
 
-  const handleClickTab = (info: string) => {
-    switch (info) {
-      case TabTypes.bun: {
-        (bunRef.current as HTMLDivElement).scrollIntoView({
-          behavior: "smooth",
-        });
-        break;
+  const { items } = useSelector(getIngredients);
+  const tabData:TTabDataExt[] = useMemo(() => {
+    const handleClickTab = (info: string) => {
+      switch (info) {
+        case TabTypes.bun: {
+          (bunRef.current as HTMLDivElement).scrollIntoView({
+            behavior: "smooth",
+          });
+          break;
+        }
+        case TabTypes.sauce: {
+          (sauceRef.current as HTMLDivElement).scrollIntoView({
+            behavior: "smooth",
+          });
+          break;
+        }
+        case TabTypes.main: {
+          (mainRef.current as HTMLDivElement).scrollIntoView({
+            behavior: "smooth",
+          });
+          break;
+        }
+  
+        default: 
+          break;
       }
-      case TabTypes.sauce: {
-        (sauceRef.current as HTMLDivElement).scrollIntoView({
-          behavior: "smooth",
-        });
-        break;
-      }
-      case TabTypes.main: {
-        (mainRef.current as HTMLDivElement).scrollIntoView({
-          behavior: "smooth",
-        });
-        break;
-      }
-
-      default: 
-        break;
     }
-  }
 
-
-  const getDataIngredients = (state: RootState) => state.ingredients.items;
-
-  const items = useSelector(getDataIngredients);
-  const tabData:TTabDataExt[] = [
-    {
-      type: TabTypes.bun,
-      title: "Булки",
-      data: items.filter((x: TIngredient) => x.type === TabTypes.bun),
-      onClick: handleClickTab,
-      scrollTop: scrollTop,
-      handleSetTab: handleSetTab,
-      active: tab === TabTypes.bun,
-      ref: bunRef,
-      containerRef: containerRef
-    },
-    {
-      type: TabTypes.sauce,
-      title: "Соусы",
-      data: items.filter((x: TIngredient) => x.type === TabTypes.sauce),
-      onClick: handleClickTab,
-      scrollTop: scrollTop,
-      handleSetTab: handleSetTab,
-      active: tab === TabTypes.sauce,
-      ref: sauceRef,
-      containerRef: containerRef
-    },
-    {
-      type: TabTypes.main,
-      title: "Начинки",
-      data: items.filter((x: TIngredient) => x.type === TabTypes.main),
-      onClick: handleClickTab,
-      scrollTop: scrollTop,
-      handleSetTab: handleSetTab,
-      active: tab === TabTypes.main,
-      ref: mainRef,
-      containerRef: containerRef
-    }
-  ];
+    return [
+      {
+        type: TabTypes.bun,
+        title: "Булки",
+        data: items.filter((x: TIngredient) => x.type === TabTypes.bun),
+        onClick: handleClickTab,
+        scrollTop: scrollTop,
+        handleSetTab: handleSetTab,
+        active: tab === TabTypes.bun,
+        ref: bunRef,
+        containerRef: containerRef
+      },
+      {
+        type: TabTypes.sauce,
+        title: "Соусы",
+        data: items.filter((x: TIngredient) => x.type === TabTypes.sauce),
+        onClick: handleClickTab,
+        scrollTop: scrollTop,
+        handleSetTab: handleSetTab,
+        active: tab === TabTypes.sauce,
+        ref: sauceRef,
+        containerRef: containerRef
+      },
+      {
+        type: TabTypes.main,
+        title: "Начинки",
+        data: items.filter((x: TIngredient) => x.type === TabTypes.main),
+        onClick: handleClickTab,
+        scrollTop: scrollTop,
+        handleSetTab: handleSetTab,
+        active: tab === TabTypes.main,
+        ref: mainRef,
+        containerRef: containerRef
+      }
+    ]
+  }, [items, bunRef, mainRef, sauceRef, scrollTop, tab]);
 
   const burgerList = useMemo(() => tabData.map((item:TTabDataExt) => {
     return <BurgerIngredientsList

@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { SET_LOGIN } from '../../services/actions/user';
 import { login, setErrorClear } from '../../services/actions/user';
 import { Link } from "react-router-dom";
 import FormsMain from "../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../components/forms/forms-main/FormsMain.module.css';
 import { PasswordInput, EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { RootState } from '../../services/reducers';
+import { getUser } from '../../services/selectors';
+import { useAppSelector, useAppDispatch } from '../../services/reducers';
 
 function PageLogin() {
-  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ email: '', password: '' });
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setErrorClear(SET_LOGIN));
@@ -25,7 +24,7 @@ function PageLogin() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.email && form.password) {
-      dispatch<any>(login(form));
+      dispatch(login(form));
     }
   }
 

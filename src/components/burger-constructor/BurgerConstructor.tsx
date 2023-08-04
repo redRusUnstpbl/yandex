@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../services/reducers';
 import { useDrop } from 'react-dnd';
 import { useNavigate } from "react-router-dom";
 import { API } from '../../utils/api';
@@ -13,9 +13,15 @@ import BurgerConstructorStyle from './BurgerConstructor.module.css'
 import BurgerConstructorItem from './burger-constructor-item/BurgerConstructorItem';
 import OrderDetails from '../order-details/OrderDetails';
 import Modal from '../modal/modal';
-import { RootState } from '../../services/reducers';
 import type { TIngredient, TResponseBody } from '../../utils/types';
 import { TabTypes } from '../../utils/types';
+import { 
+  getDataModal,
+  getDataOrder,
+  getDataMain,
+  getDataBun,
+  getUser
+} from '../../services/selectors';
 
 type TDropIngredient = {
   data: TIngredient;
@@ -26,21 +32,16 @@ type TOrderResult = {
 }
 
 export default function BurgerConstructor(): JSX.Element {
-  const dispatch = useDispatch();
-  const getDataModal = (state: RootState) => state.detail;
-  const getDataOrder = (state: RootState) => state.order;
-  const getDataMain = (state: RootState) => state.construct.items;
-  const getDataBun = (state: RootState) => state.construct.bun;
-  const getUser = (state: RootState) => state.user;
-  
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const user = useSelector(getUser);
-  const { id } = useSelector(getDataModal);
-  const modalVisible = id && id === 'order_details';
+  
+  const user = useAppSelector(getUser);
+  const { id } = useAppSelector(getDataModal);
+  const { order, orderRequest } = useAppSelector(getDataOrder)
+  const dataMain = useAppSelector(getDataMain);
+  const dataBun = useAppSelector(getDataBun);
 
-  const { order, orderRequest } = useSelector(getDataOrder)
-  const dataMain = useSelector(getDataMain);
-  const dataBun = useSelector(getDataBun);
+  const modalVisible = id && id === 'order_details';
   const items = dataBun ? dataMain.concat(dataBun) : dataMain;
   const sum = useMemo<number>(() => items.reduce(
     (sum:number, cur:TIngredient) => cur.type === TabTypes.bun ? sum + (cur.price * 2) : sum + cur.price, 0
@@ -52,7 +53,7 @@ export default function BurgerConstructor(): JSX.Element {
     } else {
       const ids = items.map((cur:TIngredient) => cur._id);
 
-      dispatch<any>(getOrder(API + '/orders', {
+      dispatch(getOrder(API + '/orders', {
         "ingredients": ids
       })).then(function(result:TResponseBody<'order', TOrderResult>){
         if (result.success) {

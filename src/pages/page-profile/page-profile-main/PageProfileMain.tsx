@@ -1,14 +1,13 @@
 import { useState, useRef } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import PageProfileMainStyles from './PageProfileMain.module.css';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUser, SET_USER_UPDATE } from '../../../services/actions/user';
-import { RootState } from '../../../services/reducers';
+import { getUser } from '../../../services/selectors';
+import { useAppDispatch, useAppSelector } from '../../../services/reducers';
 
 function PageProfileMain() {
-  const dispatch = useDispatch();
-  const getUser = (state: RootState) => state.user;
-  const { user, isRequest, isFailed } = useSelector(getUser);
+  const dispatch = useAppDispatch();
+  const { user, isRequest, isFailed } = useAppSelector(getUser);
   const [form, setForm] = useState({
     name: user?.name ?? '',
     email: user?.email ?? '',
@@ -33,13 +32,13 @@ function PageProfileMain() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch<any>(updateUser(form))
-    .then(function(){
-      setForm({
-        ...form,
-        password: ''
+    dispatch(updateUser(form))
+      .then(function () {
+        setForm({
+          ...form,
+          password: ''
+        });
       });
-    });
   }
 
   return (

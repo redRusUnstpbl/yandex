@@ -1,9 +1,9 @@
 import { useMemo, FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/reducers';
 import { useParams } from "react-router-dom";
 import IngredientsDetailsStyle from './IngredientDetails.module.css';
 import type { TIngredient } from '../../utils/types';
-import { RootState } from '../../services/reducers';
+import { getIngredients } from '../../services/selectors';
 
 type TCardInfo = {
   [type: string]: {
@@ -48,13 +48,10 @@ function prepareInfo(data: TIngredient) {
 }
 
 const IngredientsDetails: FC<TIngredientsDetails> = ({ isPage }) => {
-  const getDataIngredients = (state: RootState) => state.ingredients.items;
-
   const { ingredientId } = useParams();
-  // console.log(ingredientId);
-  
-  const ingredients = useSelector(getDataIngredients);
-  const id = useSelector((state: RootState) => {
+  const { items } = useAppSelector(getIngredients);
+
+  const id = useAppSelector((state) => {
     if (state.detail.id) {
       return state.detail.id;
     } else if (ingredientId) {
@@ -62,10 +59,7 @@ const IngredientsDetails: FC<TIngredientsDetails> = ({ isPage }) => {
     }
   });
 
-  console.log(id);
-  
-
-  const data = useMemo(() => ingredients.filter((x: TIngredient) => x._id === id), [ingredients, id]);
+  const data = useMemo(() => items.filter((x: TIngredient) => x._id === id), [items, id]);
   const info = useMemo(() => prepareInfo(data[0]), [data]);
 
   let result =

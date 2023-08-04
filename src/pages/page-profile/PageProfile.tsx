@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from '../../services/reducers';
 import PageProfileStyles from './PageProfile.module.css';
 import PageProfileMain from './page-profile-main/PageProfileMain';
 import PageProfileHistory from './page-profile-history/PageProfileHistory';
@@ -13,7 +13,7 @@ const LOGOUT = "LOGOUT";
 
 function PageProfile() {
     const [active, setActive] = useState('');
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocation();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ function PageProfile() {
 
     const onLogout = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        dispatch<any>(logout());
+        dispatch(logout());
     }
 
     return (

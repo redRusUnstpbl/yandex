@@ -1,13 +1,12 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/reducers';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BurgerIngredient from '../../components/burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../../components/burger-constructor/BurgerConstructor';
-import { RootState } from '../../services/reducers';
+import { getIngredients } from '../../services/selectors';
 
 function PageHome() {
-  const getData = (state: RootState) => state.ingredients;
-  const { items, itemsRequest, itemsFailed } = useSelector(getData);
+  const { items, itemsRequest, itemsFailed } = useAppSelector(getIngredients);
 
   return (
     <>

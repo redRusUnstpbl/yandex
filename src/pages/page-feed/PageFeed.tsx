@@ -1,24 +1,24 @@
 import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../../services/reducers";
 import PageFeedStyles from './PageFeed.module.css';
 import FeedItems from '../../components/feed-items/FeedItems';
 import { wsConnect, wsClose } from "../../services/actions/web-socket";
-import { RootState } from "../../services/reducers";
 import { TOrder } from "../../utils/types";
+import { getWs } from "../../services/selectors";
 
 function PageFeed() {
 
-  const dispatch = useDispatch();
-  const getData = (state: RootState) => state.ws;
-  const { status, orders, total, totalToday } = useSelector(getData);
+  const dispatch = useAppDispatch();
+  const { status, orders, total, totalToday } = useAppSelector(getWs);
 
   const dataReady = useMemo(() => {
     let cnt = 0;
     let data = (orders as TOrder[]).map((item: TOrder, index: number) => {
-      if (item.status == 'done' && cnt < 20) {
+      if (item.status === 'done' && cnt < 20) {
         cnt++;
         return <div key={index} className={PageFeedStyles.page_feed_orders_ready_item}>{item.number}</div>
       }
+      return false;
     });
     return data;
   }, [orders]);
@@ -26,10 +26,11 @@ function PageFeed() {
   const dataNotReady = useMemo(() => {
     let cnt = 0;
     let data = (orders as TOrder[]).map((item: TOrder, index: number) => {
-      if (item.status != 'done' && cnt < 20) {
+      if (item.status !== 'done' && cnt < 20) {
         cnt++;
         return <div key={index} className={PageFeedStyles.page_feed_orders_work_item}>{item.number}</div>
       }
+      return false;
     });
     return data;
   }, [orders]);
@@ -47,10 +48,10 @@ function PageFeed() {
     <div className={PageFeedStyles.page_feed}>
       <h1 className={PageFeedStyles.page_feed_title}>Лента заказов</h1>
 
-      {status == 'CONNECTING' &&
+      {status === 'CONNECTING' &&
         <p className="text text_type_main-default">Загрузка...</p>
       }
-      {status == 'ONLINE' && 
+      {status === 'ONLINE' && 
         <div className={PageFeedStyles.page_feed_sections}>
           <div className={PageFeedStyles.page_feed_section_list}>
             <FeedItems />

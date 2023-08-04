@@ -1,5 +1,5 @@
 import { checkResponse } from "../../utils/api";
-import { AppThunk, AppDispatch } from "../reducers";
+import { AppThunk } from "../reducers";
 import type { TIngredient } from "../../utils/types";
 
 export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" = "GET_INGREDIENTS_REQUEST";
@@ -71,7 +71,7 @@ export const removeAllIngredients = (): IRemoveAllIngredientsAction => ({
 });
 
 export const getIngredients: AppThunk = (url: string) => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST
     });

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SET_PASSWORD_RESET } from '../../../services/actions/user';
 import { resetPassword } from '../../../services/actions/user';
@@ -8,14 +7,14 @@ import FormsMain from "../../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../../components/forms/forms-main/FormsMain.module.css';
 import { PasswordInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { TResponseBody } from '../../../utils/types';
-import { RootState } from '../../../services/reducers';
+import { getUser } from '../../../services/selectors';
+import { useAppSelector, useAppDispatch } from '../../../services/reducers';
 
 function PagePasswordReset() {
-  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ password: '', token: '' });
   const [result, setResult] = useState('');
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +24,7 @@ function PagePasswordReset() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.password && form.token) {
-      dispatch<any>(resetPassword(form)).then((result: TResponseBody) => {
+      dispatch(resetPassword(form)).then((result: TResponseBody) => {
         if (result.success) {
           setResult('Восстановление пароля завершено, через 5 секунд вы будете перенаправлены на страницу авторизации');
           setTimeout(() => {
@@ -39,7 +38,7 @@ function PagePasswordReset() {
   return (
     <FormsMain title="Восстановление пароля">
       <>
-        {result && 
+        {result &&
           <p className={FormsMainsStyles.form_main_info}>{result}</p>
         }
         {user.isRequest[SET_PASSWORD_RESET] &&

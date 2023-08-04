@@ -1,14 +1,14 @@
 import { API } from "../../../utils/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../services/reducers";
 import { useEffect, useMemo, FC } from "react";
 import { useParams } from "react-router-dom";
 import { getDetailWSD, setDetailWSD } from "../../../services/actions/web-socket-detail";
 import PageFeedDetailStyles from './PageFeedDetail.module.css';
 import ItemList from '../../../components/feed-items/feed-item/item-list/ItemList';
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { RootState } from "../../../services/reducers";
 import { getIngredientById } from "../../../services/utils";
 import { TIngredient } from "../../../utils/types";
+import { getIngredients, getWsd, getWs } from "../../../services/selectors";
 
 type TIngredientValue = {
   value: TIngredient;
@@ -24,15 +24,11 @@ type TPageFeedDetail = {
 }
 
 const PageFeedDetail: FC<TPageFeedDetail> = ({ isPage }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { id } = useParams();
-  const getIngredientsData = (state: RootState) => state.ingredients;
-  const getDetailWSDData = (state: RootState) => state.wsd;
-  const getWsData = (state: RootState) => state.ws;
-
-  const { data, isRequest, isFailed } = useSelector(getDetailWSDData);
-  const { items } = useSelector(getIngredientsData);
-  const { orders } = useSelector(getWsData);
+  const { items } = useAppSelector(getIngredients);
+  const { data, isRequest, isFailed } = useAppSelector(getWsd);
+  const { orders } = useAppSelector(getWs);
 
   useEffect(() => {
 
@@ -44,12 +40,11 @@ const PageFeedDetail: FC<TPageFeedDetail> = ({ isPage }) => {
     if (order) {
       dispatch(setDetailWSD(order));
     } else {
-      dispatch<any>(getDetailWSD(API + '/orders/' + id));
+      dispatch(getDetailWSD(API + '/orders/' + id));
     }
     
   }, [dispatch, id, orders]);
 
-  
 
   const sum = useMemo(() => {
     let sum = 0;

@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { SET_REGISTER } from '../../services/actions/user';
 import { register, setErrorClear } from '../../services/actions/user';
 import { Link } from "react-router-dom";
 import FormsMain from "../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../components/forms/forms-main/FormsMain.module.css';
 import { PasswordInput, EmailInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { RootState } from '../../services/reducers';
+import { getUser } from '../../services/selectors';
+import { useAppDispatch, useAppSelector } from '../../services/reducers';
 
 function PageRegister() {
-  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ email: '', password: '', name: '' });
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setErrorClear(SET_REGISTER));
@@ -25,7 +24,7 @@ function PageRegister() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.email && form.password && form.name) {
-      dispatch<any>(register(form));
+      dispatch(register(form));
     }
   }
 

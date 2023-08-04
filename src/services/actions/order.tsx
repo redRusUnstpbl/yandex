@@ -1,7 +1,7 @@
 import { clearConstructor } from "./constructor";
 import { removeAllIngredients } from "./ingredients";
 import { checkResponse } from "../../utils/api";
-import { AppThunk, AppDispatch } from "../reducers";
+import { AppThunk } from "../reducers";
 import type { TOrder } from "../../utils/types";
 import { getCookie } from "../utils";
 
@@ -27,7 +27,7 @@ export type TOrderActions =
   | IGetOrderSuccessAction
   | IGetOrderFailedAction;
 
-export const getOrder: AppThunk = (url: string, data: {'ingredients': number[]}) => async (dispatch: AppDispatch) => {
+export const getOrder: AppThunk = (url: string, data: {'ingredients': number[]}) => async (dispatch) => {
   return await new Promise((resolve) => {
     const accessToken = getCookie('accessToken');
 

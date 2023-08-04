@@ -1,17 +1,15 @@
 import { useMemo} from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/reducers';
 import FeedItemsStyles from './FeedItems.module.css';
 import FeedItem from './feed-item/FeedItem';
-import { RootState } from '../../services/reducers';
 import { TIngredient, TOrder } from '../../utils/types';
 import { getIngredientById } from '../../services/utils';
+import { getWs, getIngredients } from '../../services/selectors';
 
 function FeedItems() {
-  const getWs = (state: RootState) => state.ws;
-  const getIngredients = (state: RootState) => state.ingredients;
 
-  const { orders } = useSelector(getWs);
-  const { items } = useSelector(getIngredients);
+  const { orders } = useAppSelector(getWs);
+  const { items } = useAppSelector(getIngredients);
 
   const orderData = useMemo(() => (orders as TOrder[]).map((item: TOrder, index) => {
     const ingredients = item.ingredients.map((item) => getIngredientById(items as TIngredient[], item))
@@ -29,7 +27,7 @@ function FeedItems() {
       date={item.createdAt}
       ingredients={ingredients as TIngredient[]}
     />
-  }), [orders]);
+  }), [orders, items]);
 
   return (
     <div className={FeedItemsStyles.feed_items}>

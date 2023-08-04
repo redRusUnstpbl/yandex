@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SET_PASSWORD_FORGOT } from '../../../services/actions/user';
 import { forgotPassword, setErrorClear } from '../../../services/actions/user';
@@ -8,13 +7,13 @@ import FormsMain from "../../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../../components/forms/forms-main/FormsMain.module.css';
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { TResponseBody } from '../../../utils/types';
-import { RootState } from '../../../services/reducers';
+import { getUser } from '../../../services/selectors';
+import { useAppSelector, useAppDispatch } from '../../../services/reducers';
 
 function PagePasswordForgot() {
-  const getUser = (state: RootState) => state.user;
   const [form, setForm] = useState({ email: '' });
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +27,7 @@ function PagePasswordForgot() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.email) {
-      dispatch<any>(forgotPassword(form)).then((result: TResponseBody) => {
+      dispatch(forgotPassword(form)).then((result: TResponseBody) => {
         if (result.success) {
           navigate('/reset-password', { replace: true })
         }

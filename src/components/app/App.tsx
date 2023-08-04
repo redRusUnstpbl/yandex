@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../services/reducers";
 import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { OnlyUnAuth, OnlyAuth } from '../protected-route/ProtectedRoute';
@@ -21,7 +21,7 @@ import PageFeedDetail from "../../pages/page-feed/page-feed-detail/PageFeedDetai
 import Modal from "../modal/modal";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const background = location.state && location.state.background;
@@ -32,8 +32,8 @@ function App() {
   }
 
   useEffect(() => {
-    dispatch<any>(checkUserAuth());
-    dispatch<any>(getIngredients(API + '/ingredients'));
+    dispatch(checkUserAuth());
+    dispatch(getIngredients(API + '/ingredients'));
   }, [dispatch]);
 
   return (

@@ -1,7 +1,7 @@
 import { API } from "../../utils/api";
 import { setCookie, getCookie } from "../utils";
 import { checkResponse } from "../../utils/api";
-import { AppThunk, AppDispatch } from "../reducers";
+import { AppThunk } from "../reducers";
 import type { TUser } from "../../utils/types";
 
 export const SET_IS_REQUEST: "SET_IS_REQUEST" = "SET_IS_REQUEST";
@@ -100,7 +100,7 @@ export const setErrorClear = (key: string): ISetErrorClearAction => ({
 });
 
 export const checkUserAuth: AppThunk = () => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     if (getCookie('accessToken')) {
       dispatch({
         type: SET_IS_REQUEST,
@@ -123,7 +123,7 @@ export const checkUserAuth: AppThunk = () => {
         })
         .catch(e => {
           if (e.message === 'jwt expired') {
-            dispatch<any>(refreshToken());
+            dispatch(refreshToken());
           } else {
             dispatch({
               type: SET_IS_FAILED,
@@ -141,7 +141,7 @@ export const checkUserAuth: AppThunk = () => {
 }
 
 export const refreshToken: AppThunk = () => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_REFRESH_TOKEN
@@ -178,7 +178,7 @@ export const register: AppThunk = (data: {
   password: string;
   name: string;
 }) => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_REGISTER
@@ -215,7 +215,7 @@ export const login: AppThunk = (data: {
   email: string;
   password: string;
 }) => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_LOGIN
@@ -249,7 +249,7 @@ export const login: AppThunk = (data: {
 }
 
 export const logout: AppThunk = () => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_LOGOUT
@@ -287,7 +287,7 @@ export const updateUser: AppThunk = (data: {
   name: string;
   email: string;
   password: string;
-}) => async (dispatch: AppDispatch) => {
+}) => async (dispatch) => {
   await Promise.all([
     dispatch({
       type: SET_IS_REQUEST,
@@ -321,7 +321,7 @@ export const updateUser: AppThunk = (data: {
 
 export const forgotPassword: AppThunk = (data: {
   email: string;
-}) => async (dispatch: AppDispatch) => {
+}) => async (dispatch) => {
   return await new Promise((resolve) => {
     dispatch({
       type: SET_IS_REQUEST,
@@ -358,7 +358,7 @@ export const forgotPassword: AppThunk = (data: {
 export const resetPassword: AppThunk = (data: {
   password: string;
   token: string
-}) => async (dispatch: AppDispatch) => {
+}) => async (dispatch) => {
   return await new Promise((resolve) => {
     dispatch({
       type: SET_IS_REQUEST,
