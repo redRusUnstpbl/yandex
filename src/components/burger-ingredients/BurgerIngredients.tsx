@@ -1,11 +1,11 @@
 import { useMemo, useState, useRef, createRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientStyle from './BurgerIngredients.module.css'
 import BurgerIngredientsList from './burger-ingredients-list/burgerIngredientsList';
 import type { TIngredient, TTabData, THandleTabInfo } from '../../utils/types';
 import { TabTypes } from '../../utils/types';
 import { getIngredients } from '../../services/selectors';
+import { useAppSelector } from '../../services/reducers';
 
 type TTabDataExt = TTabData & {
   'ref': React.RefObject<HTMLDivElement>,
@@ -32,7 +32,7 @@ export default function BurgerIngredient() {
     }
   }
 
-  const { items } = useSelector(getIngredients);
+  const { items } = useAppSelector(getIngredients);
   const tabData:TTabDataExt[] = useMemo(() => {
     const handleClickTab = (info: string) => {
       switch (info) {

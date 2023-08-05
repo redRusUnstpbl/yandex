@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { RootState } from '../../services/reducers';
+import { useAppSelector } from '../../services/reducers';
 
 type TProtect = {
   onlyUnAuth?: boolean;
@@ -9,7 +9,7 @@ type TProtect = {
 }
 
 const Protected: FC<TProtect> = ({ onlyUnAuth = false, component }) => {
-  const {user, isAuthChecked } = useSelector((store: RootState) => {
+  const {user, isAuthChecked } = useAppSelector((store: RootState) => {
     return {
       'user': store.user.user,
       'isAuthChecked': store.user.isAuthChecked

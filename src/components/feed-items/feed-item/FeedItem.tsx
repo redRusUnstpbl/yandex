@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/reducers';
 import FeedItemStyles from './FeedItem.module.css';
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ItemLogo from './item-logo/ItemLogo';
@@ -19,7 +19,7 @@ type TFeedItem = {
 const FeedItem: FC<TFeedItem> = ({ sum, name, num, ingredients, date }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const showModalHandler = () => { 
     dispatch(showModal(0));
