@@ -37,6 +37,25 @@ export type TIngredient = {
   cnt?: number
 }
 
+export type TOrderDetails = {
+  orderId?: string | number;
+}
+
+export type TOrder = {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+}
+
+export type TUser = {
+  email: string;
+  name: string;
+}
+
 export type TResponseBody<TDataKey extends string = '', TDataType = {}> = {
   [key in TDataKey]?: TDataType
 } & {

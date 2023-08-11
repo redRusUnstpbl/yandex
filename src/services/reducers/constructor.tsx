@@ -5,12 +5,20 @@ import {
   CLEAR_CONSTRUCTOR_INGREDIENT
 } from "../actions/constructor";
 
-const initialState = {
+import type { TIngredient } from "../../utils/types";
+import type { TConstructorActions } from "../actions/constructor";
+
+type TConstructorState = {
+  items: ReadonlyArray<TIngredient>;
+  bun: TIngredient | null;
+}
+
+const initialState: TConstructorState = {
   items: [],
   bun: null
 };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action: TConstructorActions): TConstructorState => {
   switch (action.type) {
     case CLEAR_CONSTRUCTOR_INGREDIENT: {
       return {

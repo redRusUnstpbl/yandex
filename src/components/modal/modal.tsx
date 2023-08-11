@@ -14,6 +14,8 @@ type TModal = {
 function createWrapperAndAppendToBody(wrapperId: string) {
   const wrapperElement = document.createElement('div');
   wrapperElement.setAttribute("id", wrapperId);
+  wrapperElement.style.position = 'relative';
+  wrapperElement.style.zIndex = '55';
   document.body.appendChild(wrapperElement);
   return wrapperElement;
 }

@@ -1,32 +1,106 @@
 import { API } from "../../utils/api";
 import { setCookie, getCookie } from "../utils";
 import { checkResponse } from "../../utils/api";
+import { AppThunk } from "../reducers";
+import type { TUser } from "../../utils/types";
 
-export const SET_IS_REQUEST = "SET_IS_REQUEST";
-export const SET_IS_FAILED = "SET_IS_FAILED";
-export const SET_CLEAR_ERROR = "SET_CLEAR_ERROR";
-export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
-export const SET_LOGIN = 'SET_LOGIN';
-export const SET_LOGOUT = 'SET_LOGOUT';
-export const SET_REGISTER = 'SET_REGISTER';
-export const SET_USER = 'SET_USER';
-export const SET_USER_UPDATE = 'SET_USER_UPDATE';
-export const SET_PASSWORD_FORGOT = 'SET_PASSWORD_FORGOT';
-export const SET_PASSWORD_RESET = 'SET_PASSWORD_RESET';
-export const SET_REFRESH_TOKEN = 'SET_REFRESH_TOKEN';
+export const SET_IS_REQUEST: "SET_IS_REQUEST" = "SET_IS_REQUEST";
+export const SET_IS_FAILED: "SET_IS_FAILED" = "SET_IS_FAILED";
+export const SET_CLEAR_ERROR: "SET_CLEAR_ERROR" = "SET_CLEAR_ERROR";
+export const SET_AUTH_CHECKED: "SET_AUTH_CHECKED" = "SET_AUTH_CHECKED";
+export const SET_LOGIN: "SET_LOGIN" = "SET_LOGIN";
+export const SET_LOGOUT: "SET_LOGOUT" = "SET_LOGOUT";
+export const SET_REGISTER: "SET_REGISTER" = "SET_REGISTER";
+export const SET_USER: "SET_USER" = "SET_USER";
+export const SET_USER_UPDATE: "SET_USER_UPDATE" = "SET_USER_UPDATE";
+export const SET_PASSWORD_FORGOT: "SET_PASSWORD_FORGOT" = "SET_PASSWORD_FORGOT";
+export const SET_PASSWORD_RESET: "SET_PASSWORD_RESET" = "SET_PASSWORD_RESET";
+export const SET_REFRESH_TOKEN: "SET_REFRESH_TOKEN" = "SET_REFRESH_TOKEN";
 
-export const setAuthChecked = (value: boolean) => ({
+export interface ISetAuthCheckedAction {
+  readonly type: typeof SET_AUTH_CHECKED;
+  readonly payload: boolean;
+}
+
+export interface ISetErrorClearAction {
+  readonly type: typeof SET_CLEAR_ERROR;
+  readonly key: string;
+}
+
+export interface ISetIsRequestAction {
+  readonly type: typeof SET_IS_REQUEST;
+  readonly request: string;
+}
+
+export interface ISetIsFailedAction {
+  readonly type: typeof SET_IS_FAILED;
+  readonly request: string;
+  readonly error ?: string;
+}
+
+export interface ISetLoginAction {
+  readonly type: typeof SET_LOGIN;
+  readonly user: TUser;
+}
+
+export interface ISetLogoutAction {
+  readonly type: typeof SET_LOGOUT;
+}
+
+export interface ISetRegisterAction {
+  readonly type: typeof SET_REGISTER;
+  readonly user: TUser;
+}
+
+export interface ISetUserAction {
+  readonly type: typeof SET_USER;
+  readonly user: TUser;
+}
+
+export interface ISetUserUpdateAction {
+  readonly type: typeof SET_USER_UPDATE;
+  readonly user: TUser;
+}
+
+export interface ISetPasswordForgotAction {
+  readonly type: typeof SET_PASSWORD_FORGOT;
+}
+
+export interface ISetPasswordResetAction {
+  readonly type: typeof SET_PASSWORD_RESET;
+}
+
+export interface ISetRefreshTokenAction {
+  readonly type: typeof SET_REFRESH_TOKEN;
+}
+
+export type TUserActions = 
+  | ISetAuthCheckedAction
+  | ISetErrorClearAction
+  | ISetIsRequestAction
+  | ISetIsFailedAction
+  | ISetLoginAction
+  | ISetLogoutAction
+  | ISetRegisterAction
+  | ISetUserAction
+  | ISetUserUpdateAction
+  | ISetPasswordForgotAction
+  | ISetPasswordResetAction
+  | ISetRefreshTokenAction;
+
+
+export const setAuthChecked = (value: boolean): ISetAuthCheckedAction => ({
   type: SET_AUTH_CHECKED,
   payload: value,
 });
 
-export const setErrorClear = (key: string) => ({
+export const setErrorClear = (key: string): ISetErrorClearAction => ({
   type: SET_CLEAR_ERROR,
   key: key,
 });
 
-export const checkUserAuth: any = () => {
-  return function (dispatch: any) {
+export const checkUserAuth: AppThunk = () => {
+  return function (dispatch) {
     if (getCookie('accessToken')) {
       dispatch({
         type: SET_IS_REQUEST,
@@ -66,8 +140,8 @@ export const checkUserAuth: any = () => {
   }
 }
 
-export const refreshToken = () => {
-  return function (dispatch: any) {
+export const refreshToken: AppThunk = () => {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_REFRESH_TOKEN
@@ -99,12 +173,12 @@ export const refreshToken = () => {
   }
 }
 
-export const register: any = (data: {
+export const register: AppThunk = (data: {
   email: string;
   password: string;
   name: string;
 }) => {
-  return function (dispatch: any) {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_REGISTER
@@ -137,11 +211,11 @@ export const register: any = (data: {
   }
 }
 
-export const login: any = (data: {
+export const login: AppThunk = (data: {
   email: string;
   password: string;
 }) => {
-  return function (dispatch: any) {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_LOGIN
@@ -174,8 +248,8 @@ export const login: any = (data: {
   }
 }
 
-export const logout: any = () => {
-  return function (dispatch: any) {
+export const logout: AppThunk = () => {
+  return function (dispatch) {
     dispatch({
       type: SET_IS_REQUEST,
       request: SET_LOGOUT
@@ -209,12 +283,11 @@ export const logout: any = () => {
   }
 }
 
-
-export const updateUser: any = (data: {
+export const updateUser: AppThunk = (data: {
   name: string;
   email: string;
   password: string;
-}) => async (dispatch: any) => {
+}) => async (dispatch) => {
   await Promise.all([
     dispatch({
       type: SET_IS_REQUEST,
@@ -246,9 +319,9 @@ export const updateUser: any = (data: {
   ]);
 }
 
-export const forgotPassword: any = (data: {
+export const forgotPassword: AppThunk = (data: {
   email: string;
-}) => async (dispatch: any) => {
+}) => async (dispatch) => {
   return await new Promise((resolve) => {
     dispatch({
       type: SET_IS_REQUEST,
@@ -282,10 +355,10 @@ export const forgotPassword: any = (data: {
   })
 }
 
-export const resetPassword: any = (data: {
+export const resetPassword: AppThunk = (data: {
   password: string;
   token: string
-}) => async (dispatch: any) => {
+}) => async (dispatch) => {
   return await new Promise((resolve) => {
     dispatch({
       type: SET_IS_REQUEST,

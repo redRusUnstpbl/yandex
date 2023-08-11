@@ -12,20 +12,34 @@ import {
   SET_PASSWORD_RESET
 } from '../actions/user';
 
-const initialState = {
+import type { TUser } from '../../utils/types';
+import type { TUserActions } from '../actions/user';
+
+type TFetchInfo = {
+  [name: string]: string
+}
+
+type TUserState = {
+  user: TUser | null;
+  isAuthChecked: boolean;
+  isRequest: TFetchInfo,
+  isFailed: TFetchInfo
+}
+
+const initialState: TUserState = {
   user: null,
   isAuthChecked: false,
   isRequest: {},
   isFailed: {},
 };
 
-function filterKey(obj, value) {
+function filterKey(obj: TFetchInfo, value: string) {
   return Object.fromEntries(
     Object.entries(obj).filter(([key]) => key !== value)
   )
 }
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions): TUserState => {
   switch (action.type) {
     case SET_IS_REQUEST:
       if (!state.isRequest[action.request]) {

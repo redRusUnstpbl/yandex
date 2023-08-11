@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../services/reducers";
 import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { OnlyUnAuth, OnlyAuth } from '../protected-route/ProtectedRoute';
@@ -16,10 +16,12 @@ import PageProfile from "../../pages/page-profile/PageProfile";
 import PagePasswordForgot from "../../pages/page-password/page-password-forgot/PagePasswordForgot";
 import PagePasswordReset from "../../pages/page-password/page-password-reset/PagePasswordReset";
 import IngredientsDetails from "../ingredient-details/IngredientDetails";
+import PageFeed from "../../pages/page-feed/PageFeed";
+import PageFeedDetail from "../../pages/page-feed/page-feed-detail/PageFeedDetail";
 import Modal from "../modal/modal";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const background = location.state && location.state.background;
@@ -47,6 +49,9 @@ function App() {
           <Route path='/reset-password' element={<OnlyUnAuth component={<PagePasswordReset />} />} />
           <Route path='/profile' element={<OnlyAuth component={<PageProfile />} />} />
           <Route path='/profile/history' element={<OnlyAuth component={<PageProfile />} />} />
+          <Route path='/profile/history/:id' element={<OnlyAuth component={<PageFeedDetail isPage={true} />} />} />
+          <Route path='/feed' element={<PageFeed />} />
+          <Route path='/feed/:id' element={<PageFeedDetail isPage={true} />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
 
@@ -57,6 +62,22 @@ function App() {
               element={
                 <Modal title="Детали ингредиента" setCloseModal={setCloseModal}>
                   <IngredientsDetails isPage={false} />
+                </Modal>
+              }
+            />
+            <Route
+              path='/feed/:id'
+              element={
+                <Modal setCloseModal={setCloseModal}>
+                  <PageFeedDetail isPage={false}/>
+                </Modal>
+              }
+            />
+            <Route
+              path='/profile/history/:id'
+              element={
+                <Modal setCloseModal={setCloseModal}>
+                  <PageFeedDetail isPage={false}/>
                 </Modal>
               }
             />

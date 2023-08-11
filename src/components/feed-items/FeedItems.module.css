@@ -1,0 +1,11 @@
+.feed_items{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 929px;
+    overflow-y: auto;
+    scrollbar-gutter: stable both-edges;
+    margin-left: -12px;
+    padding-right: 4px;
+    composes: custom-scroll from global;
+}

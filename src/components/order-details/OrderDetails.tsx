@@ -1,10 +1,8 @@
 import { FC } from 'react';
 import OrderDetailsStyle from "./OrderDetails.module.css";
 import OrderDetailsImgDone from "./images/done.png";
+import type { TOrderDetails } from '../../utils/types';
 
-type TOrderDetails = {
-  orderId?: string | number;
-}
 const OrderDetails: FC<TOrderDetails> = ({ orderId }) => {
   return (
     <div className={OrderDetailsStyle.card}>

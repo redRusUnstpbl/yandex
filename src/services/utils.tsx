@@ -1,3 +1,6 @@
+import { TIngredient } from "../utils/types";
+
+
 export function getCookie(name: string): string | undefined {
   const matches = document.cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([$?*|{}\]\\^])/g, '\\$1') + '=([^;]*)')
@@ -34,4 +37,14 @@ export function setCookie(
 
 export function deleteCookie(name: string) {
   setCookie(name, '', { expires: -1 });
+}
+
+export function getIngredientById(ingredients: TIngredient[], id: string) {
+  for (let i = 0; i < ingredients.length; i ++) {
+    if (ingredients[i]._id == id) {
+      return ingredients[i];
+    }
+  }
+
+  return false;
 }

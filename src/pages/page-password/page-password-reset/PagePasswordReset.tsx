@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SET_PASSWORD_RESET } from '../../../services/actions/user';
 import { resetPassword } from '../../../services/actions/user';
@@ -8,14 +7,14 @@ import FormsMain from "../../../components/forms/forms-main/FormsMain";
 import FormsMainsStyles from '../../../components/forms/forms-main/FormsMain.module.css';
 import { PasswordInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { TResponseBody } from '../../../utils/types';
+import { getUser } from '../../../services/selectors';
+import { useAppSelector, useAppDispatch } from '../../../services/reducers';
 
 function PagePasswordReset() {
-  // @ts-ignore
-  const getUser = (state) => state.user;
   const [form, setForm] = useState({ password: '', token: '' });
   const [result, setResult] = useState('');
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +38,7 @@ function PagePasswordReset() {
   return (
     <FormsMain title="Восстановление пароля">
       <>
-        {result && 
+        {result &&
           <p className={FormsMainsStyles.form_main_info}>{result}</p>
         }
         {user.isRequest[SET_PASSWORD_RESET] &&

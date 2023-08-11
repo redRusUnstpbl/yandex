@@ -1,6 +1,6 @@
 import { useRef, FC } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/reducers';
 import { moveElementInConstructor } from '../../../services/actions/constructor';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorItemStyle from './BurgerConstructorItem.module.css';
@@ -18,7 +18,7 @@ type TBurgerConstructorItem = {
 
 const BurgerConstructorItem: FC<TBurgerConstructorItem> = ({ type, isLocked, text, price, thumbnail, isDrag, index, onDeleteItem }): JSX.Element => {
   const ref = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [, drop] = useDrop({
     accept: "constructorItem",
