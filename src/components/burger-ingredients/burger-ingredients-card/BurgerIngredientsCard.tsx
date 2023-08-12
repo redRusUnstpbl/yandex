@@ -35,6 +35,7 @@ export const BurgerIngredientsCard: FC<TBurgerIngredientsCard> = ({ data, count 
   return (
     <>
       <div
+        data-test='ingredient'
         className={BurgerIngredientsStyle.burger_ingredients_card}
         onClick={showModalHandler}
         ref={drag}

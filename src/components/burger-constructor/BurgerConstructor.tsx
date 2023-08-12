@@ -116,11 +116,11 @@ export default function BurgerConstructor(): JSX.Element {
         }
         {!orderRequest &&
         <>
-          <div className={BurgerConstructorItemsClass} ref={dropTarget}>
+          <div className={BurgerConstructorItemsClass} ref={dropTarget} data-test='constructor_area'>
             {items.length > 0 ?
               <>
                 {dataBun &&
-                  <div className={BurgerConstructorStyle.burger_constructor_bun_top}>
+                  <div className={BurgerConstructorStyle.burger_constructor_bun_top} data-test='constructor_top'>
                     <BurgerConstructorItem
                       type="top"
                       index={-1}
@@ -134,7 +134,7 @@ export default function BurgerConstructor(): JSX.Element {
                 }
 
                 {dataMain.length > 0 &&
-                  <ul className={BurgerConstructorStyle.burger_constructor_list}>
+                  <ul className={BurgerConstructorStyle.burger_constructor_list} data-test='constructor_main'>
                     {dataMain.map(function (item: TIngredient, i:number) {
                       return (
                         <li key={item.key}>
@@ -154,7 +154,7 @@ export default function BurgerConstructor(): JSX.Element {
                 }
 
                 {dataBun &&
-                  <div className={BurgerConstructorStyle.burger_constructor_bun_bottom}>
+                  <div className={BurgerConstructorStyle.burger_constructor_bun_bottom} data-test='constructor_bottom'>
                     <BurgerConstructorItem
                       type="bottom"
                       index={-1}
@@ -174,7 +174,7 @@ export default function BurgerConstructor(): JSX.Element {
             }
           </div>
 
-          <div className={BurgerConstructorBottomClass}>
+          <div className={BurgerConstructorBottomClass} data-test='make-order'>
             <p className={BurgerConstructorStyle.burger_constructor_price_value}>
               <span>{sum}</span>
               <CurrencyIcon type="primary" />

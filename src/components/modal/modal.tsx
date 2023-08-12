@@ -44,7 +44,7 @@ const Modal: FC<TModal> = ({ children, title, setCloseModal, wrapperId = "react-
       <div className={ModalStyle.modal}>
         <div className={ModalStyle.modal_header}>
           <p className={ModalStyle.modal_header_value}>{title}</p>
-          <button className={ModalStyle.modal_header_close} onClick={handleCloseModal}>
+          <button data-test='modal-close' className={ModalStyle.modal_header_close} onClick={handleCloseModal}>
             <CloseIcon type="primary" />
           </button>
         </div>

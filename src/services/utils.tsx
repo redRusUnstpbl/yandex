@@ -41,7 +41,7 @@ export function deleteCookie(name: string) {
 
 export function getIngredientById(ingredients: TIngredient[], id: string) {
   for (let i = 0; i < ingredients.length; i ++) {
-    if (ingredients[i]._id == id) {
+    if (ingredients[i]._id === id) {
       return ingredients[i];
     }
   }

@@ -9,7 +9,7 @@ type TDetailState = {
   readonly id: number | string | null;
 }
 
-const initialState: TDetailState = {
+export const initialState: TDetailState = {
   id: null,
 };
 

@@ -26,7 +26,7 @@ type TUserState = {
   isFailed: TFetchInfo
 }
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   user: null,
   isAuthChecked: false,
   isRequest: {},

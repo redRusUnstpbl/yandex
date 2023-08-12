@@ -17,7 +17,7 @@ type TIngredietsState = {
   itemsFailed: boolean;
 }
 
-const initialState: TIngredietsState = {
+export const initialState: TIngredietsState = {
   items: [],
   itemsRequest: false,
   itemsFailed: false, 
