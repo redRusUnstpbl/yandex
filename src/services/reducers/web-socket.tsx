@@ -18,7 +18,7 @@ type TWSState = {
     error ?: string | null;
 }
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
     status: 'OFFLINE',
     orders: [],
     total: 0,

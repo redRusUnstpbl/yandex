@@ -14,7 +14,7 @@ type TWSDState = {
     isFailed: boolean;
 }
 
-const initialState: TWSDState = {
+export const initialState: TWSDState = {
     data: null,
     isRequest: false,
     isFailed: false,

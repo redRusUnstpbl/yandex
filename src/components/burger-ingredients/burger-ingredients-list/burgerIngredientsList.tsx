@@ -33,7 +33,7 @@ const BurgerIngredientsList = forwardRef<HTMLDivElement, TTabData>(({ data, titl
       </h2>
 
       {burgerIngredientsCards ?
-        <div className={BurgerIngredientsListStyle.burger_ingredients_list_items}>
+        <div className={BurgerIngredientsListStyle.burger_ingredients_list_items} data-test={title}>
           {burgerIngredientsCards}
         </div>
         :

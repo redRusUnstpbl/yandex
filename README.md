@@ -1,3 +1,7 @@
+# Пример работы проекта
+
+Проект доступен по адресу [redrusunstpbl.github.io/yandex/](https://redrusunstpbl.github.io/yandex/).
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
